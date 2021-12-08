@@ -212,7 +212,7 @@ class Profile extends StatelessWidget {
   }
 
   void goBootpayRequest(BuildContext context) async {
-    Payload payload = Payload();
+    var payload = Payload();
     payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
     payload.iosApplicationId = '60e24e465b2948001ddc501c';
 
@@ -221,7 +221,7 @@ class Profile extends StatelessWidget {
     payload.name = '본인인증';
     payload.orderId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    Extra extra = Extra();
+    var extra = Extra();
     extra.appScheme = 'bootpaySample';
 
     Bootpay().request(

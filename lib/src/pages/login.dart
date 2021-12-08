@@ -2,8 +2,12 @@ import 'dart:convert';
 import 'dart:io' as io;
 import 'dart:io';
 import 'dart:math';
+import 'package:bootpay/bootpay.dart';
+import 'package:bootpay/model/extra.dart';
+import 'package:bootpay/model/payload.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:http/http.dart' as http;
@@ -14,10 +18,13 @@ import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:plinic2/constants.dart';
+import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
+import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
 import 'package:plinic2/src/controller/login_controller.dart';
 import 'package:plinic2/src/controller/notification_controller.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/pages/register.dart';
+import 'package:plinic2/src/pages/search_id.dart';
 import 'package:plinic2/src/repository/firebase_user_repository.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
@@ -234,7 +241,7 @@ class Login extends StatelessWidget {
         // ),
         body: Obx(() => LoginController.to.isLoading.value == true
                 ? loading()
-                : backGroundGrdient() //loginGroup(),
+                : backGroundGrdient(context) //loginGroup(),
             ));
   }
 
@@ -330,7 +337,7 @@ class Login extends StatelessWidget {
     );
   }
 
-  Widget backGroundGrdient() {
+  Widget backGroundGrdient(BuildContext context) {
     return Container(
       width: Get.mediaQuery.size.width,
       height: Get.mediaQuery.size.height,
@@ -355,7 +362,7 @@ class Login extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
-                  Get.back();
+                  Get.offAll(RegisterPage(), transition: Transition.native);
                 },
                 icon: Icon(LineIcons.arrowLeft, color: white),
               ),
@@ -552,7 +559,9 @@ class Login extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  goBootpayRequest(context);
+                },
                 child: Text('아이디찾기',
                     style: TextStyle(
                       fontFamily: 'NotoSansKR',
@@ -586,6 +595,62 @@ class Login extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  void goBootpayRequest(BuildContext context) async {
+    var payload = Payload();
+    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.iosApplicationId = '60e24e465b2948001ddc501c';
+
+    payload.pg = 'danal';
+    payload.method = 'auth';
+    payload.name = '본인인증';
+    payload.orderId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    var extra = Extra();
+    extra.appScheme = 'bootpaySample';
+
+    Bootpay().request(
+      context: context,
+      payload: payload,
+      onDone: (String json) {
+        Map<String, dynamic> value2 = jsonDecode(json);
+        print(value2);
+        print('onDone: $json');
+        Get.to(() => SearchIdPage(),
+            transition: Transition.native, arguments: value2);
+      },
+      onReady: (String json) {
+        //flutter는 가상계좌가 발급되었을때  onReady가 호출되지 않는다. onDone에서 처리해주어야 한다.
+        print('onReady: $json');
+      },
+      onCancel: (String json) {
+        print('onCancel: $json');
+        Get.back();
+      },
+      onError: (String json) {
+        print('onError: $json');
+      },
+    );
+  }
+
+  void exitDialog(context) async {
+    await showAnimatedDialog(
+      context: context,
+      barrierDismissible: true,
+      animationType: DialogTransitionType.fade,
+      curve: Curves.fastOutSlowIn,
+      builder: (BuildContext context) {
+        return PlinicDialogOneButton(
+          title: '알림',
+          content: '본인인증 오류가 발생했습니다',
+          buttonText: '확인',
+          buttonClick: () {
+            Get.back();
+          },
+        );
+      },
     );
   }
 }
