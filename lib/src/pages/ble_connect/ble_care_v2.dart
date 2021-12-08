@@ -8,6 +8,7 @@ import 'package:plinic2/src/controller/ble/ble_controller.dart';
 import 'package:plinic2/src/pages/ble_connect/components/timer_text.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+//깃허보 스소 올림
 class BleCareV2Page extends GetView<BLEController> {
   BleCareV2Page({Key? key}) : super(key: key);
 
