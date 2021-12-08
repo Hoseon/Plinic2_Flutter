@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "939741427675",
+    "project_id": "plinic2-e03c6",
+    "storage_bucket": "plinic2-e03c6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939741427675:android:08d964c1763694ca0919fe",
+        "android_client_info": {
+          "package_name": "com.g1p.plinic2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "939741427675-haffkd55b0ir2lkiilvufr1dofc2c887.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.g1p.plinic2",
+            "certificate_hash": "835968317cff61e43fb31dd1210d4c6a5c3e5e84"
+          }
+        },
+        {
+          "client_id": "939741427675-klgs5tmc72lekski7dfuip68pudntfa1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.g1p.plinic2",
+            "certificate_hash": "0450e612b09a8f8a2453e78de887a6cfb2ce3e9f"
+          }
+        },
+        {
+          "client_id": "939741427675-66dkqpqifnk6jce5k6t9caovfh52rvsb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATVg0xBu2b_1a5ht9xiTUhx6_kiNvgq18"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "939741427675-66dkqpqifnk6jce5k6t9caovfh52rvsb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "939741427675-u9s495io7a5k79gha4bkeo5qrf4qei9j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.g1p.plinic2"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
