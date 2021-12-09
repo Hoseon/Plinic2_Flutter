@@ -20,9 +20,11 @@ import 'package:line_icons/line_icons.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
 import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
+import 'package:plinic2/src/controller/findId_controller.dart';
 import 'package:plinic2/src/controller/login_controller.dart';
 import 'package:plinic2/src/controller/notification_controller.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
+import 'package:plinic2/src/pages/check_login.dart';
 import 'package:plinic2/src/pages/register.dart';
 import 'package:plinic2/src/pages/search_id.dart';
 import 'package:plinic2/src/repository/firebase_user_repository.dart';
@@ -235,6 +237,7 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put<LoginController>(LoginController());
+
     return Scaffold(
         // appBar: AppBar(
         //   backgroundColor: Colors.transparent,
