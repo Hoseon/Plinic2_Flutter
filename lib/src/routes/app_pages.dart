@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:plinic2/src/app.dart';
 import 'package:plinic2/src/bindings/ble_binding.dart';
+import 'package:plinic2/src/bindings/creditCard_binding.dart';
 import 'package:plinic2/src/bindings/tabs_binding.dart';
 import 'package:plinic2/src/pages/ble_connect/ble_care_v2.dart';
 import 'package:plinic2/src/pages/ble_connect/ble_ready_v2.dart';
 import 'package:plinic2/src/pages/login.dart';
 import 'package:plinic2/src/pages/review/review.dart';
+import 'package:plinic2/src/pages/subscribe/subscribe_regist_cart.dart';
 import 'package:plinic2/src/pages/tabs/tabs.dart';
 import 'package:plinic2/src/splash.dart';
 import 'package:plinic2/src/splash_2.dart';
@@ -33,6 +35,10 @@ class AppPages {
         name: '/bleRedayV2',
         page: () => BleReadyV2Page(),
         binding: BleBinding()),
+    GetPage(
+        name: '/crediCard',
+        page: () => SubScribeRegistCard(),
+        binding: CreditCardBinding()),
     // GetPage(name: '/home', page:()=> HomePage(), binding: DrawerBinding()),
   ];
 }
