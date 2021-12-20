@@ -37,7 +37,7 @@ class HomeMainPage extends StatelessWidget {
       child: Column(
         children: [
           PlinicTopPage(),
-          MainGuidePage(),
+          // MainGuidePage(), 2021-12-20 홈 디자인 변경
           MonthSolutionPage(),
           MainBanner1Page(),
           MainMagazine(),
