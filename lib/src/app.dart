@@ -11,6 +11,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+      //파이어베이스 연동
       future: Firebase.initializeApp(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
         if (snapshot.hasError) {

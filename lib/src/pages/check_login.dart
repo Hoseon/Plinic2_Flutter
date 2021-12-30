@@ -65,7 +65,7 @@ class _CheckLoginState extends State<CheckLogin> {
           // return Dialog(
           //   backgroundColor: Colors.deepPurple,
           //   child: Text('qqq'),
-          // );// 커스텀 다이얼 로그로 만들�� 있다.
+          // );// 커스텀 다이얼 로그로 만들수 있다.
           return AlertDialog(
             backgroundColor: Colors.white,
             title: Column(
