@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:plinic2/src/model/person_model.dart';
 import 'package:http/http.dart' as http;
 
-class MovieRepository extends GetxService {
+class MovieRepository {
   Future<List<Person>> loadMovies(String pageView) async {
     var queryParameters = {
       'api_key': 'ffb636e867782adbb2da8f18cb1fa0f0',
@@ -20,13 +18,12 @@ class MovieRepository extends GetxService {
     return list.map<Person>((item) => Person.fromJson(item)).toList();
   }
 
-  Future<Map<String,dynamic>> getDetail(String id) async {
+  Future<Map<String, dynamic>> getDetail(String id) async {
     var queryParameters = {
       'api_key': 'ffb636e867782adbb2da8f18cb1fa0f0',
       'language': 'ko-KR',
     };
-    var uri =
-        Uri.https('api.themoviedb.org', '/3/movie/$id', queryParameters);
+    var uri = Uri.https('api.themoviedb.org', '/3/movie/$id', queryParameters);
     var response = await http.get(uri);
     Map<String, dynamic> body = json.decode(response.body);
     var list = body;

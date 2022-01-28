@@ -22,5 +22,4 @@ class FirebaseUserRepository {
     var users = FirebaseFirestore.instance.collection('users');
     users.doc(docId).update({'last_login_time': time});
   }
-
 }

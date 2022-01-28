@@ -356,9 +356,22 @@ class TermsCheckPage extends GetView<TermsCheckController> {
                   elevation: MaterialStateProperty.all(0.0),
                   backgroundColor: MaterialStateProperty.all(primary)),
               onPressed: () {
+                var agree = {
+                  //사용자의 약관동의 정보를 저장하여 전달한다.
+                  'uid': '',
+                  'agree1': controller.check1.value,
+                  'agree2': controller.check2.value,
+                  'agree3': controller.check3.value,
+                  'opt_agree4': controller.check4.value,
+                  'opt_agree5': controller.check5.value,
+                };
                 Get.to(() => AddUserInfoV2Page(),
                     transition: Transition.native,
-                    arguments: {'mode': mode, 'credential': credential});
+                    arguments: {
+                      'mode': mode,
+                      'credential': credential,
+                      'agree': agree
+                    });
               },
               child: Text('다음 단계',
                   style: TextStyle(

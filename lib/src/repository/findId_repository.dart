@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:plinic2/src/repository/firebase_user_repository.dart';
 
 class FindIdRepository {
-  final CollectionReference _collectionReference =
-      FirebaseFirestore.instance.collection('users');
+  // final CollectionReference _collectionReference =
+  //     FirebaseFirestore.instance.collection('users');
 
 // static Future<PermModel?> findbyCode(String code, PermModel permModel) async {
 //     var perm = FirebaseFirestore.instance.collection('perm');

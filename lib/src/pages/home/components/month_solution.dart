@@ -15,15 +15,46 @@ class MonthSolutionPage extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
           alignment: Alignment.centerLeft,
-          child: Text(
-            '이달의 맞춤 솔루션',
-            style: TextStyle(
-              color: Color(0xff1d1d1d),
-              fontSize: 16,
-              fontFamily: 'NotoSansKR',
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.normal,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                '이달의 맞춤 솔루션',
+                style: TextStyle(
+                  color: Color(0xff1d1d1d),
+                  fontSize: 16,
+                  fontFamily: 'NotoSansKR',
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.grey.shade400;
+                    }
+                    return grey_3;
+                  }),
+                  elevation: MaterialStateProperty.all(0.0),
+                  minimumSize: MaterialStateProperty.all(
+                    Size(58, 20),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  '구독중',
+                  style: TextStyle(
+                    fontFamily: 'NotoSans',
+                    color: black,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         SizedBox(height: spacing_xl),
@@ -70,6 +101,54 @@ class MonthSolutionPage extends StatelessWidget {
                       height: 1.64,
                     ),
                   ),
+                  SizedBox(height: 2),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        style: ButtonStyle(
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            elevation: MaterialStateProperty.all(0.0),
+                            backgroundColor: MaterialStateProperty.all(
+                              state_colors_red.withOpacity(0.6),
+                            ),
+                            minimumSize:
+                                MaterialStateProperty.all(Size(47, 20))),
+                        onPressed: () {},
+                        child: Text(
+                          '보습',
+                          style: TextStyle(
+                            fontFamily: 'NotoSans',
+                            color: white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: spacing_xxs),
+                      ElevatedButton(
+                        style: ButtonStyle(
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            elevation: MaterialStateProperty.all(0.0),
+                            backgroundColor: MaterialStateProperty.all(
+                              state_colors_blue.withOpacity(0.6),
+                            ),
+                            minimumSize:
+                                MaterialStateProperty.all(Size(47, 20))),
+                        onPressed: () {},
+                        child: Text(
+                          '진정',
+                          style: TextStyle(
+                            fontFamily: 'NotoSans',
+                            color: white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               )
             ],
@@ -96,7 +175,7 @@ class MonthSolutionPage extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    '고민 NO! 피부변화를 위해 신청해보세요.',
+                    '이번 달 피부 습관을 만들어 줄 구독박스예요.',
                     style: TextStyle(
                       color: Color(0xff828282),
                       fontSize: 14,

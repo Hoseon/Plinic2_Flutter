@@ -1,16 +1,17 @@
 import 'package:bootpay/bootpay.dart';
-import 'package:bootpay/bootpay_api.dart';
 import 'package:bootpay/model/extra.dart';
 import 'package:bootpay/model/payload.dart';
+import 'package:bootpay/model/user.dart' as bootpayuser;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_blue/flutter_blue.dart';
 import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/controller/login_controller.dart';
 import 'package:plinic2/src/controller/notification_controller.dart';
 import 'package:plinic2/src/pages/ble_test.dart';
 import 'package:plinic2/src/pages/login.dart';
+import 'package:plinic2/src/pages/subscribe/subscribe_manage.dart';
+import 'package:plinic2/src/pages/subscribe/subscribe_regist_cart.dart';
 // import 'package:flutter_reactive_ble/flutter_reactive_ble.dart' as ble;
 // import 'package:plinic2/src/pages/payment.dart';
 
@@ -158,7 +159,11 @@ class Profile extends StatelessWidget {
                   // ),
                   TextButton(
                     onPressed: () {
-                      goBootpayRequest(context);
+                      // goBootpayRequest(context); //본인인증
+                      // bootPayBillTest(context); //정기결제
+                      Get.toNamed('/crediCard');
+                      // Get.to(SubScribeRegistCard(),
+                      //     transition: Transition.native);
                     },
                     child: Text('부트페이 테스트'),
                   ),
@@ -208,6 +213,56 @@ class Profile extends StatelessWidget {
           }
         },
       ),
+    );
+  }
+
+  void bootPayBillTest(BuildContext context) async {
+    var payload = Payload();
+    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.iosApplicationId = '60e24e465b2948001ddc501c';
+
+    payload.pg = 'nicepay';
+    payload.method = 'card_rebill';
+    //    payload.methods = ['card', 'phone', 'vbank', 'bank'];
+    payload.name = 'testUser';
+    //    payload.price = 2000.0; //정기결제시 0 혹은 주석
+    payload.orderId = DateTime.now().millisecondsSinceEpoch.toString();
+    payload.params = {
+      "callbackParam1": "value12",
+      "callbackParam2": "value34",
+      "callbackParam3": "value56",
+      "callbackParam4": "value78",
+    };
+
+    var bootUser = bootpayuser.User();
+    bootUser.username = '추호선';
+    bootUser.email = 'chs1025@gmail.com';
+    bootUser.area = '인천';
+    bootUser.phone = '010-3602-0852';
+    bootUser.addr = '인천시 연수구 옥련2동';
+
+    var extra = Extra();
+    extra.appScheme = 'bootpayFlutterSample';
+
+    Bootpay().request(
+      context: context,
+      payload: payload,
+      onDone: (String json) {
+        print('onDone: $json');
+        Get.back();
+      },
+      onReady: (String json) {
+        //flutter는 가상계좌가 발급되었을때  onReady가 호출되지 않는다. onDone에서 처리해주어야 한다.
+        print('onReady: $json');
+      },
+      onCancel: (String json) {
+        print('onCancel: $json');
+        Get.back();
+      },
+      onError: (String json) {
+        print('onError: $json');
+        Get.back();
+      },
     );
   }
 

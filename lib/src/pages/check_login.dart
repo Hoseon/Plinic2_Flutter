@@ -35,7 +35,6 @@ class _CheckLoginState extends State<CheckLogin> {
 
         if (snapshot.data == null) {
           // firebase auth에 사용자가 정상적으로 안올라 갔을때
-          print('널 체크');
         } else {
           ProfileController.to.authStateChange(snapshot.data!);
 
@@ -65,7 +64,7 @@ class _CheckLoginState extends State<CheckLogin> {
           // return Dialog(
           //   backgroundColor: Colors.deepPurple,
           //   child: Text('qqq'),
-          // );// 커스텀 다이얼 로그로 만들�� 있다.
+          // );// 커스텀 다이얼 로그로 만들수 있다.
           return AlertDialog(
             backgroundColor: Colors.white,
             title: Column(

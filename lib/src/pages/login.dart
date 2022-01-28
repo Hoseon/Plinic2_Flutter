@@ -206,7 +206,7 @@ class Login extends StatelessWidget {
       'response_type': 'code',
       'client_id': 'd9e9094492b96804b415c7a5ddb4b151',
       'response_mode': 'form_post',
-      'redirect_uri': 'https://admin.g1p.xyz/callbacks/kakao/sign_in',
+      'redirect_uri': 'https://admin.g1p.xyz/login/callbacks/kakao/sign_in',
       'scope': 'profile,account_email',
       'state': clientState,
     });
@@ -220,11 +220,12 @@ class Login extends StatelessWidget {
     final tokenUrl = Uri.https('kauth.kakao.com', '/oauth/token', {
       'grant_type': 'authorization_code',
       'client_id': 'd9e9094492b96804b415c7a5ddb4b151',
-      'redirect_uri': 'https://admin.g1p.xyz/callbacks/kakao/sign_in',
+      'redirect_uri': 'https://admin.g1p.xyz/login/callbacks/kakao/sign_in',
       'code': body['code'],
     });
     var responseTokens = await http.post(tokenUrl);
-    final kakaoTokenUrl = Uri.https('admin.g1p.xyz', '/callbacks/kakao/token');
+    final kakaoTokenUrl =
+        Uri.https('admin.g1p.xyz', '/login/callbacks/kakao/token');
 
     Map<String, dynamic> bodys = json.decode(responseTokens.body);
     var response = await http
