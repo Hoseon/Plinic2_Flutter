@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 // import 'package:http/http.dart' as http;
 
-class BillRepository extends GetxService {
+class BillRepository {
   Future<bool> billCreate(Map<String, dynamic> data) async {
     print(data);
     // print(data['cardNo'].toString());

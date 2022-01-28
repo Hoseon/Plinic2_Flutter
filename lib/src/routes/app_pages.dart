@@ -24,7 +24,8 @@ class AppPages {
         page: () => Splash2Page(),
         transition: Transition.fadeIn),
     GetPage(name: '/login', page: () => Login(), transition: Transition.fadeIn),
-    GetPage(name: '/app', page: () => App()),
+    GetPage(
+        name: '/app', page: () => App(), transition: Transition.noTransition),
     GetPage(
         name: '/reviews',
         page: () => ReviewPage(),

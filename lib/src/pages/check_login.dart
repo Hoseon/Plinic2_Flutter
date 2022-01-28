@@ -35,7 +35,6 @@ class _CheckLoginState extends State<CheckLogin> {
 
         if (snapshot.data == null) {
           // firebase auth에 사용자가 정상적으로 안올라 갔을때
-          print('널 체크');
         } else {
           ProfileController.to.authStateChange(snapshot.data!);
 
