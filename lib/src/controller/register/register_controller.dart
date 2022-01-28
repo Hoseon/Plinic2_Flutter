@@ -12,7 +12,6 @@ class RegisterController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    // _agree(agree);
     var email = Get.find<ProfileController>().myProfile.value.email.toString();
     print(email);
     var userData = Get.find<ProfileController>().myProfile.value;
