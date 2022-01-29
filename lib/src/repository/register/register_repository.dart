@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:plinic2/src/model/user_model.dart';
 
 class RegisterRepository {
