@@ -62,7 +62,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         if (mode == 'kakao') {
           signInWithKakao(credential, agree);
         } else {
-          signInWithGoogle(credential);
+          signInWithGoogle(credential, agree);
         }
         // register();
         // Get.to(() => AddUserInfoV2Page(), transition: Transition.native);
@@ -446,6 +446,11 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
               var yearMonth = selectedDate.split('/');
               _textEditingController1.text = yearMonth[0].toString();
               _textEditingController2.text = yearMonth[1].toString();
+              //생년월일이 클릭되는 순간 ProfileController에 <RxString>birthDay에 저장한다.
+              var birthDay = _textEditingController1.text +
+                  '_' +
+                  _textEditingController2.text;
+              ProfileController.to.setBirthDay(birthDay);
               // setState(() {
               //   var test = selectedDate.split('/');
               //   _textEditingController1.text = test[0].toString();
@@ -498,7 +503,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     );
   }
 
-  Future<void> signInWithGoogle(OAuthCredential credential) async {
+  Future<void> signInWithGoogle(OAuthCredential credential, agree) async {
     // Once signed in, return the UserCredential
     ProfileController.to.addInfoV2(
         _textEditingController1.text + '_' + _textEditingController2.text,
@@ -506,7 +511,10 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     // Get.back();
     return await FirebaseAuth.instance
         .signInWithCredential(credential)
-        .then((value) {});
+        .then((value) async {
+      await Get.to(() => UserRegisterPage(),
+          transition: Transition.native, arguments: {'agree': agree});
+    });
   }
 
   Future<void> signInWithKakao(credential, agree) async {

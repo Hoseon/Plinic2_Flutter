@@ -10,7 +10,7 @@ import 'package:plinic2/src/pages/my/address/address.dart';
 import 'package:plinic2/src/pages/my/address/address_manage.dart';
 import 'package:plinic2/src/pages/my/badge/badge.dart';
 import 'package:plinic2/src/pages/my/cash/cash.dart';
-import 'package:plinic2/src/pages/my/edit_profile.dart';
+import 'package:plinic2/src/pages/my/show_profile.dart';
 import 'package:plinic2/src/pages/my/notice/notice.dart';
 import 'package:plinic2/src/pages/my/post/my_post.dart';
 import 'package:plinic2/src/pages/my/qna/qna.dart';
@@ -56,7 +56,7 @@ class MyTestPage extends GetView<ProfileController> {
                 InkWell(
                   splashColor: grey_2,
                   onTap: () {
-                    Get.to(() => EditProfilePage(),
+                    Get.to(() => ShowProfilePage(),
                         transition: Transition.fadeIn);
                   },
                   child: Text(
@@ -74,7 +74,7 @@ class MyTestPage extends GetView<ProfileController> {
                 InkWell(
                   splashColor: grey_2,
                   onTap: () {
-                    Get.to(() => EditProfilePage(),
+                    Get.to(() => ShowProfilePage(),
                         transition: Transition.fadeIn);
                   },
                   child: Text(
