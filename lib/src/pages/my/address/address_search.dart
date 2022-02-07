@@ -43,7 +43,6 @@ class _AddressSearchPageState extends State<AddressSearchPage> {
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (WebViewController webViewController) {
         _webViewController = webViewController;
-        // _loadHtmlFromAssets();
       },
       javascriptChannels: <JavascriptChannel>{
         _toasterJavascriptChannel(context),
@@ -55,16 +54,7 @@ class _AddressSearchPageState extends State<AddressSearchPage> {
     return JavascriptChannel(
         name: 'messageHandler',
         onMessageReceived: (JavascriptMessage message) {
-          // print('------');
-          // print(message.message);
           Get.back(result: message.message);
         });
-  }
-
-  Future _loadHtmlFromAssets() async {
-    var fileText = await rootBundle.loadString('assets/html/daumpost.html');
-    _webViewController!.loadUrl(Uri.dataFromString(fileText,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
   }
 }

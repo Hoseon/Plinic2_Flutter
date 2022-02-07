@@ -8,7 +8,11 @@ import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/controller/terms_check_controller.dart';
+import 'package:plinic2/src/model/user_model.dart';
 import 'package:plinic2/src/pages/check_login.dart';
+import 'package:plinic2/src/pages/register.dart';
+import 'package:plinic2/src/pages/register/user_register.dart';
+import 'package:plinic2/src/repository/register/register_repository.dart';
 
 class AddUserInfoV2Page extends StatefulWidget {
   AddUserInfoV2Page({Key? key}) : super(key: key);
@@ -18,23 +22,27 @@ class AddUserInfoV2Page extends StatefulWidget {
 }
 
 class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
-  TextEditingController _textEditingController1 = TextEditingController();
-  TextEditingController _textEditingController2 = TextEditingController();
+  final RegisterRepository _registerRepository = RegisterRepository();
+  final TextEditingController _textEditingController1 = TextEditingController();
+  final TextEditingController _textEditingController2 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var mode = Get.arguments['mode'];
     var credential = Get.arguments['credential'];
+    var agree = Get.arguments['agree'];
+    ProfileController.to.userSaveAgree(agree);
 
     return Scaffold(
       backgroundColor: white,
       appBar: buildAppbar(),
       body: buildBody(context),
-      bottomSheet: buildBottom(context, mode, credential),
+      bottomSheet: buildBottom(context, mode, credential, agree),
     );
   }
 
-  Widget buildBottom(BuildContext context, String mode, var credential) {
+  Widget buildBottom(
+      BuildContext context, String mode, var credential, var agree) {
     return ElevatedButton(
       style: ButtonStyle(
           minimumSize:
@@ -47,15 +55,16 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
       onPressed: () {
         if (_textEditingController1.text.isEmpty) {
           print('데이터 없음');
-          validDialog(context);
+          validDialog(context); //생년월일을 입력하지 않으면 얼럿창 오픈
           return;
         }
 
         if (mode == 'kakao') {
-          signInWithKakao(credential);
+          signInWithKakao(credential, agree);
         } else {
-          signInWithGoogle(credential);
+          signInWithGoogle(credential, agree);
         }
+        // register();
         // Get.to(() => AddUserInfoV2Page(), transition: Transition.native);
       },
       child: Text('플리닉 시작하기',
@@ -104,7 +113,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         Container(
           alignment: Alignment.centerLeft,
           padding: EdgeInsets.symmetric(horizontal: spacing_xl),
-          child: Text('생년월일',
+          child: Text('생년월',
               style: TextStyle(
                 fontFamily: 'NotoSansKR',
                 color: black,
@@ -223,8 +232,8 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
                   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
                   child: Row(
                     children: [
-                      _groupButtonManCheck(),
-                      _groupButtonWomenUnCheck()
+                      _groupButtonWomenUnCheck(),
+                      _groupButtonManCheck()
                     ],
                   ),
                 )
@@ -232,8 +241,8 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
                   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
                   child: Row(
                     children: [
-                      _groupButtonManUnCheck(),
-                      _groupButtonWomenCheck()
+                      _groupButtonWomenCheck(),
+                      _groupButtonManUnCheck()
                     ],
                   ),
                 ),
@@ -276,7 +285,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         decoration: BoxDecoration(
           color: white,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
+              topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
           border: Border(
             right: BorderSide(
                 color: primary_light, width: 1, style: BorderStyle.solid),
@@ -317,7 +326,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
           decoration: BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
+                topRight: Radius.circular(4), bottomRight: Radius.circular(4)),
             border: Border(
               right: BorderSide(
                   color: textfields, width: 1, style: BorderStyle.solid),
@@ -359,7 +368,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
           decoration: BoxDecoration(
             color: Colors.transparent,
             borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(4), topRight: Radius.circular(4)),
+                bottomLeft: Radius.circular(4), topLeft: Radius.circular(4)),
             border: Border(
               right: BorderSide(
                   color: textfields, width: 1, style: BorderStyle.solid),
@@ -396,7 +405,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         decoration: BoxDecoration(
           color: white,
           borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(4), topRight: Radius.circular(4)),
+              bottomLeft: Radius.circular(4), topLeft: Radius.circular(4)),
           border: Border(
             right: BorderSide(
                 color: primary_light, width: 1, style: BorderStyle.solid),
@@ -437,6 +446,11 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
               var yearMonth = selectedDate.split('/');
               _textEditingController1.text = yearMonth[0].toString();
               _textEditingController2.text = yearMonth[1].toString();
+              //생년월일이 클릭되는 순간 ProfileController에 <RxString>birthDay에 저장한다.
+              var birthDay = _textEditingController1.text +
+                  '_' +
+                  _textEditingController2.text;
+              ProfileController.to.setBirthDay(birthDay);
               // setState(() {
               //   var test = selectedDate.split('/');
               //   _textEditingController1.text = test[0].toString();
@@ -489,27 +503,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     );
   }
 
-  void registerDialog(context) async {
-    await showAnimatedDialog(
-      context: context,
-      barrierDismissible: false,
-      animationType: DialogTransitionType.fade,
-      curve: Curves.fastOutSlowIn,
-      builder: (BuildContext context) {
-        return PlinicDialogOneButton(
-          buttonText: '확인',
-          title: '알림',
-          content: '회원가입이 완료되었습니다',
-          buttonClick: () {
-            Get.back();
-            Get.offAll(() => CheckLogin(), transition: Transition.native);
-          },
-        );
-      },
-    );
-  }
-
-  Future<void> signInWithGoogle(OAuthCredential credential) async {
+  Future<void> signInWithGoogle(OAuthCredential credential, agree) async {
     // Once signed in, return the UserCredential
     ProfileController.to.addInfoV2(
         _textEditingController1.text + '_' + _textEditingController2.text,
@@ -517,20 +511,22 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     // Get.back();
     return await FirebaseAuth.instance
         .signInWithCredential(credential)
-        .then((value) {
-      registerDialog(context);
+        .then((value) async {
+      await Get.to(() => UserRegisterPage(),
+          transition: Transition.native, arguments: {'agree': agree});
     });
   }
 
-  Future<void> signInWithKakao(credential) async {
+  Future<void> signInWithKakao(credential, agree) async {
+    //파이어베이스 AUTH인증과 동시에 회원가입 페이지로 이동하는곳
     // Once signed in, return the UserCredential
     ProfileController.to.addInfoV2(
         _textEditingController1.text + '_' + _textEditingController2.text,
         TermsCheckController.to.isMan.value);
-    // Get.back();
     return await FirebaseAuth.instance.signInWithCustomToken(credential).then(
       (sucess) {
-        registerDialog(context);
+        Get.to(() => UserRegisterPage(),
+            transition: Transition.native, arguments: {'agree': agree});
       },
     );
   }

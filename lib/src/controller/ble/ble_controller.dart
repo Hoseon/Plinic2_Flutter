@@ -48,17 +48,10 @@ class BLEController extends GetxController {
 
   void scanForDevices() async {
     flutterBlue.scan().listen((scanResult) async {
-      print('-----scan start-------');
-      print(scanResult.device);
-      print('-----scan end-------');
       if (scanResult.device.name == 'Plinic_Single') {
-        //Assigning bluetooth device
         device = scanResult.device;
-        // print('device name : ' + device.name);
         testBleId(device.id.toString());
         testBleName(device.name.toString());
-        // print('device name : ' + device.id.toString());
-        //After that we stop the scanning for device
         stopScanning();
       }
     });
@@ -95,20 +88,15 @@ class BLEController extends GetxController {
   void discoverServices() async {
     var services = await device.discoverServices();
     services.forEach((service) {
-      print('---------------------service--------------------');
-      // print(services);
+      // print('---------------------service--------------------');
       service.characteristics.forEach((char) {
-        // print(char);
-        //0000ffe1-0000-1000-8000-00805f9b34fb
-        // if (char.uuid.toString() == '6e400003-b5a3-f393-e0a9-e50e24dcca9e') {
         if (char.uuid.toString() == '0000ffe1-0000-1000-8000-00805f9b34fb') {
-          print('read찾음');
+          // print('read찾음');
           notify = char;
           setNotify();
         }
-        // if (char.uuid.toString() == '0000ffe2-0000-1000-8000-00805f9b34fb') {
         if (char.uuid.toString() == '0000ffe2-0000-1000-8000-00805f9b34fb') {
-          print('write찾음');
+          // print('write찾음');
           c = char;
         }
       });

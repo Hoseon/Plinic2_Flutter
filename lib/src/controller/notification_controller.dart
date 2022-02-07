@@ -22,8 +22,8 @@ class NotificationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _initNotification();
-    _getToken();
+    // _initNotification();
+    // _getToken();
   }
 
   Future<void> _initNotification() async {
