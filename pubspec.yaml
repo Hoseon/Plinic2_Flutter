@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.79+79
+version: 1.0.90+90
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -47,6 +47,7 @@ dependencies:
     git:
       url: https://github.com/AlexHartford/flutter_datetime_picker.git
       ref: master
+  flutter_dotenv: ^5.0.2
   flutter_image_slideshow: ^0.1.0
   flutter_linear_datepicker: ^2.0.3
   flutter_local_notifications: ^5.0.0
@@ -66,13 +67,17 @@ dependencies:
   group_button: ^3.0.0
   group_radio_button: ^1.1.0
   http: null
+  image_cropper: ^1.4.1
+  image_picker: ^0.8.4+6
   intl: ^0.17.0
   introduction_screen: ^2.1.0
+  is_first_run: ^1.0.0
   line_icons: ^2.0.1
   percent_indicator: ^3.0.1
   permission_handler: ^8.0.1
   pie_chart: ^5.0.0
   readmore: ^2.1.0
+  retrofit: ^3.0.1
   roundcheckbox: ^2.0.1
   shimmer: ^2.0.0
   sign_in_with_apple: ^3.0.0
@@ -83,13 +88,14 @@ dependencies:
   table_calendar: ^3.0.2
   uuid: null
   webview_flutter: ^3.0.0
-  is_first_run: ^1.0.0
-
 
 dev_dependencies:
+  build_runner: ^2.1.7
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.1.4
   pedantic: ^1.11.0
+  retrofit_generator: ^4.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -102,6 +108,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/images/
     - assets/images/splash/
     - assets/images/tabsIcon/

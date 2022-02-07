@@ -9,7 +9,7 @@ class TermsCheckController extends GetxController {
   RxBool check3 = false.obs;
   RxBool check4 = false.obs;
   RxBool check5 = false.obs;
-  RxBool isMan = true.obs;
+  RxBool isMan = false.obs; //여자로 초기값 설정
 
   var textController1 = TextEditingController().text.obs;
   var textController2 = TextEditingController().text.obs;

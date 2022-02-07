@@ -14,16 +14,19 @@ import 'package:plinic2/src/component/common_text.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/model/user_model.dart';
+import 'package:plinic2/src/pages/my/edit_profile.dart';
 
-class EditProfilePage extends StatefulWidget {
-  EditProfilePage({Key? key}) : super(key: key);
+class ShowProfilePage extends StatefulWidget {
+  ShowProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  State<ShowProfilePage> createState() => _ShowProfilePageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _ShowProfilePageState extends State<ShowProfilePage> {
   File? image; //사용자 프로필 이미지를 받아 올대
+  bool gender = false;
+
   late UserModel myProfile;
 
   late TextEditingController controller1;
@@ -67,8 +70,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Get.back();
             },
           ),
+          actions: [
+            Container(
+              padding: EdgeInsets.only(right: 5),
+              alignment: Alignment.center,
+              child: TextButton(
+                child: regularTextCommon('수정하기', 14),
+                onPressed: () {
+                  //수정하기
+                  Get.to(() => EditProfilePage(),
+                      transition: Transition.native);
+                },
+              ),
+            )
+          ],
+          actionsIconTheme: IconThemeData(
+            color: Colors.black,
+          ),
         ),
-        bottomNavigationBar: bottomButton(context),
+        // bottomNavigationBar: bottomButton(context),
         body: mainBody(context, controller1, controller2, controller3));
   }
 
@@ -129,7 +149,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             color: Colors.white,
                           ),
                           onPressed: () {
-                            bottomSheet();
+                            // bottomSheet();
                           },
                         ),
                       ),
@@ -223,9 +243,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               fontStyle: FontStyle.normal,
                             ),
                             decoration: InputDecoration(
-                              // filled: true,
-                              // fillColor: grey_3,
-                              // enabled: ,
+                              filled: true,
+                              fillColor: grey_3,
+                              enabled: false,
                               contentPadding: EdgeInsets.all(8),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
@@ -233,40 +253,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               ),
                               focusColor: Colors.red,
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: grey_1, width: 1)),
+                                  borderSide: BorderSide(
+                                      color: Colors.black, width: 2)),
                               border: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: grey_1, width: 0.5),
-                              ),
-                              suffixIcon: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 12),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: grey_3,
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      width: 64,
-                                      height: 28,
-                                      child: TextButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          '중복확인',
-                                          style: TextStyle(
-                                            fontFamily: 'NotoSans',
-                                            color: textfields,
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400,
-                                            fontStyle: FontStyle.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ),
@@ -291,7 +282,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           TextField(
                             onTap: () {
                               // datePicker(context);
-                              showDateDialog(context); //데이터 피커 변경 2022-02-07
+                              // showDateDialog(context); //데이터 피커 변경 2022-02-07
                             },
                             controller: controller3,
                             readOnly: true,
@@ -363,15 +354,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
                           Row(
                             children: [
                               Obx(() =>
-                                  Get.find<ProfileController>().isMan.value !=
+                                  Get.find<ProfileController>().gender.value !=
                                           true
                                       ? _groupButtonWomenCheck()
                                       : _groupButtonWomenUnCheck()),
                               Obx(() =>
-                                  Get.find<ProfileController>().isMan.value !=
+                                  Get.find<ProfileController>().gender.value !=
                                           true
                                       ? _groupButtonManUnCheck()
-                                      : _groupButtonWomenUnCheck()),
+                                      : _groupButtonManCheck()),
                             ],
                           ),
                           SizedBox(height: spacing_xl),
@@ -561,14 +552,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
         onPressed: () {
           saveProfile(context);
         },
-        child: Text('수정완료',
-            style: TextStyle(
-              fontFamily: 'NotoSans',
-              color: white,
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.normal,
-            )),
+        child: Text(
+          '저장',
+          style: TextStyle(
+            fontFamily: 'NotoSansKR',
+            color: Color(0xffffffff),
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            fontStyle: FontStyle.normal,
+          ),
+        ),
       ),
     );
   }

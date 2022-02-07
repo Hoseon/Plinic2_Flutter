@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:plinic2/src/model/user_model.dart';
 
 class RegisterRepository {
-  Future<dynamic> registerUser(UserModel userData, var agree) async {
+  Future<dynamic> registerUser(
+      UserModel userData, var agree, String pushToken) async {
     var dio = Dio(BaseOptions(baseUrl: 'https://admin.g1p.xyz'));
+    // var dio = Dio(BaseOptions(baseUrl: 'http://localhost:8001'));
     try {
       var response = await dio.post('/register', data: {
         'user': {
@@ -16,7 +18,7 @@ class RegisterRepository {
           'birthDay': userData.birthDay,
           'avata_url': userData.avataUrl
         },
-        'token': {'uid': userData.uid, 'token': 'asdfasdfasdf'},
+        'token': {'uid': userData.uid, 'token': pushToken},
         'agree': {
           'uid': userData.uid,
           'agree1': agree['agree1'],
