@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -14,6 +16,12 @@ import 'package:plinic2/src/routes/app_pages.dart';
 import 'package:plinic2/src/splash.dart';
 
 void main() async {
+  if (kReleaseMode) {
+    await dotenv.load(fileName: '.env.production');
+  } else {
+    await dotenv.load(fileName: '.env.development');
+  }
+
   // runApp(MyApp()); 2021-08-25 테이블 캘린터 날짜 셋팅을 위한 주석
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   await initializeDateFormatting().then((_) => runApp(MyApp()));
