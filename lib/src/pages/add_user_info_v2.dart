@@ -174,7 +174,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
                   width: Get.mediaQuery.size.width,
                   child: TextField(
                     onTap: () {
-                      showDateDialog(context);
+                      // showDateDialog(context);
                     },
                     readOnly: true,
                     controller: _textEditingController2,
@@ -320,6 +320,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         onTap: () {
           TermsCheckController.to
               .toggleGender(TermsCheckController.to.isMan.value);
+          ProfileController.to.changeGender('남자');
         },
         child: Container(
           alignment: Alignment.center,
@@ -362,6 +363,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         onTap: () {
           TermsCheckController.to
               .toggleGender(TermsCheckController.to.isMan.value);
+          ProfileController.to.changeGender('여자');
         },
         child: Container(
           alignment: Alignment.center,
@@ -447,9 +449,13 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
               _textEditingController1.text = yearMonth[0].toString();
               _textEditingController2.text = yearMonth[1].toString();
               //생년월일이 클릭되는 순간 ProfileController에 <RxString>birthDay에 저장한다.
-              var birthDay = _textEditingController1.text +
-                  '_' +
-                  _textEditingController2.text;
+              if (_textEditingController2.text.length == 1) {
+                _textEditingController2.text =
+                    '0' + _textEditingController2.text;
+              }
+              var birthDay =
+                  _textEditingController1.text + _textEditingController2.text;
+
               ProfileController.to.setBirthDay(birthDay);
               // setState(() {
               //   var test = selectedDate.split('/');
@@ -505,9 +511,9 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
 
   Future<void> signInWithGoogle(OAuthCredential credential, agree) async {
     // Once signed in, return the UserCredential
-    ProfileController.to.addInfoV2(
-        _textEditingController1.text + '_' + _textEditingController2.text,
-        TermsCheckController.to.isMan.value);
+    // ProfileController.to.addInfoV2(
+    //     _textEditingController1.text + '_' + _textEditingController2.text,
+    //     TermsCheckController.to.isMan.value);
     // Get.back();
     return await FirebaseAuth.instance
         .signInWithCredential(credential)
@@ -520,9 +526,9 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
   Future<void> signInWithKakao(credential, agree) async {
     //파이어베이스 AUTH인증과 동시에 회원가입 페이지로 이동하는곳
     // Once signed in, return the UserCredential
-    ProfileController.to.addInfoV2(
-        _textEditingController1.text + '_' + _textEditingController2.text,
-        TermsCheckController.to.isMan.value);
+    // ProfileController.to.addInfoV2(
+    //     _textEditingController1.text + '_' + _textEditingController2.text,
+    //     TermsCheckController.to.isMan.value);
     return await FirebaseAuth.instance.signInWithCustomToken(credential).then(
       (sucess) {
         Get.to(() => UserRegisterPage(),

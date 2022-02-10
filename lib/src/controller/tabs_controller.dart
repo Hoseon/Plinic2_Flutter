@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
 // enum RouteName { Home, Care, Community, Shop, Temp }
-enum RouteName { Care, My }
+enum RouteName { Care, My, Temp }
 
 class TabsController extends GetxService {
   //앱이 꺼지기 전까지 서비스가 유지되어야 하기 때문에 GetxService로 했다

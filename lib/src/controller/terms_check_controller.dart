@@ -49,6 +49,7 @@ class TermsCheckController extends GetxController {
 
   void toggleGender(value) {
     isMan(!value);
+    print(isMan);
   }
 
   void setYear(value) {

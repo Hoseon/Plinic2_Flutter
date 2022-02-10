@@ -13,10 +13,7 @@ class MyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var profileUrl =
-        ProfileController.to.myProfile.value.avataUrl; //아바타 이미지 가져옴
-    var email = ProfileController.to.myProfile.value.email; //사용자의 이메일 가져 온다.
-    var name = ProfileController.to.myProfile.value.name; //사용자의 이름가져옴
+    var myProfile = ProfileController.to.myProfile.value; //아바타 이미지 가져옴
     return Column(
       children: [
         SizedBox(height: 46),
@@ -30,9 +27,11 @@ class MyPage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
           child: Row(
             children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                child: urlProfileImage(profileUrl),
+              Obx(
+                () => Container(
+                    alignment: Alignment.centerLeft,
+                    child: urlProfileImage(
+                        ProfileController.to.myProfile.value.avataUrl)),
               ),
               SizedBox(width: 16),
               InkWell(
@@ -47,12 +46,14 @@ class MyPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        boldTextCommon('$name님', 16),
+                        Obx(() => boldTextCommon(
+                            '${ProfileController.to.myProfile.value.nickname}님',
+                            16)),
                         Icon(LineIcons.angleRight, size: 15)
                       ],
                     ),
                     SizedBox(height: 4),
-                    Text(email.toString(),
+                    Text(myProfile.email.toString(),
                         style: TextStyle(
                           fontFamily: 'NotoSans',
                           color: Color(0xff828282),

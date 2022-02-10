@@ -39,6 +39,8 @@ class Tabs extends GetView<TabsController> {
             //   return Profile();
             case RouteName.My:
               return MyPage();
+            case RouteName.Temp:
+              return Profile();
             // case RouteName.My:
             //   return MyPage();
           }
@@ -76,6 +78,10 @@ class Tabs extends GetView<TabsController> {
                 'assets/images/tabs/bottom-user-inactive.svg',
                 'assets/images/tabs/bottom-user.svg',
                 '마이'),
+            buildBottomNavigationBarItem(
+                'assets/images/tabs/bottom-user-inactive.svg',
+                'assets/images/tabs/bottom-user.svg',
+                'Temp'),
           ],
         ),
       ),

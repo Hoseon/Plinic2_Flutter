@@ -75,6 +75,15 @@ class CareMainPage extends StatelessWidget {
         body: careMain(context),
       ),
       // careMain_Loading(),
+      // bottomSheet: Padding(
+      //   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      //   child: Container(
+      //       decoration: BoxDecoration(
+      //           borderRadius: BorderRadius.circular(10), color: Colors.blue),
+      //       width: Get.mediaQuery.size.width,
+      //       height: 45),
+      // ),
+
       floatingActionButton: PlinicFaB(),
     );
   }

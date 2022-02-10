@@ -159,6 +159,16 @@ class Profile extends StatelessWidget {
                   // ),
                   TextButton(
                     onPressed: () {
+                      goBootpayRequest(context); //본인인증
+                      // bootPayBillTest(context); //정기결제
+                      // Get.toNamed('/crediCard');
+                      // Get.to(SubScribeRegistCard(),
+                      //     transition: Transition.native);
+                    },
+                    child: Text('부트페이 본인인증 테스트'),
+                  ),
+                  TextButton(
+                    onPressed: () {
                       // goBootpayRequest(context); //본인인증
                       // bootPayBillTest(context); //정기결제
                       Get.toNamed('/crediCard');
@@ -218,7 +228,7 @@ class Profile extends StatelessWidget {
 
   void bootPayBillTest(BuildContext context) async {
     var payload = Payload();
-    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.androidApplicationId = '60e24e465b2948001ddc501b';
     payload.iosApplicationId = '60e24e465b2948001ddc501c';
 
     payload.pg = 'nicepay';
@@ -268,7 +278,7 @@ class Profile extends StatelessWidget {
 
   void goBootpayRequest(BuildContext context) async {
     var payload = Payload();
-    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.androidApplicationId = '60e24e465b2948001ddc501b';
     payload.iosApplicationId = '60e24e465b2948001ddc501c';
 
     payload.pg = 'danal';
@@ -292,6 +302,7 @@ class Profile extends StatelessWidget {
       },
       onCancel: (String json) {
         print('onCancel: $json');
+        Get.back();
       },
       onError: (String json) {
         print('onError: $json');

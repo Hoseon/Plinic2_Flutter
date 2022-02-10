@@ -110,7 +110,7 @@ class BLEController extends GetxController {
     notify.value.listen((value) {
       // print(value);
       testBleData(value.toString()); //조나현 책임 테스트용 View 데이터 2021-12-07
-      print(testBleData);
+      // print(testBleData);
       // print('--------- notify start ------------');
       // print(value.toString());
       var time =

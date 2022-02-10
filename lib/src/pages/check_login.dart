@@ -46,10 +46,8 @@ class _CheckLoginState extends State<CheckLogin> {
         }
 
         if (snapshot.hasData) {
-          print(snapshot.hasData);
           return Tabs();
         } else if (snapshot.hasData == false) {
-          print(snapshot.hasData);
           return RegisterPage();
         } else {
           return RegisterPage();

@@ -1,5 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:bootpay/bootpay.dart';
+import 'package:bootpay/model/extra.dart';
+import 'package:bootpay/model/payload.dart';
+import 'package:bootpay/model/user.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -12,9 +18,11 @@ import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/appbar_title.dart';
 import 'package:plinic2/src/component/common_text.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
+import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/model/user_model.dart';
 import 'package:plinic2/src/pages/my/edit_profile.dart';
+import 'package:plinic2/src/restclient/UserClient.dart';
 
 class ShowProfilePage extends StatefulWidget {
   ShowProfilePage({Key? key}) : super(key: key);
@@ -26,6 +34,7 @@ class ShowProfilePage extends StatefulWidget {
 class _ShowProfilePageState extends State<ShowProfilePage> {
   File? image; //사용자 프로필 이미지를 받아 올대
   bool gender = false;
+  Dio dio = Dio();
 
   late UserModel myProfile;
 
@@ -44,7 +53,6 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
       setState(() {
         this.image = imageTemp;
       });
-      print(imageTemp);
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
@@ -53,9 +61,13 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
   @override
   Widget build(BuildContext context) {
     myProfile = Get.find<ProfileController>().myProfile.value;
+    var profile_BirthDay = myProfile.birthDay!.substring(0, 4) +
+        '년 - ' +
+        myProfile.birthDay!.substring(4, 6) +
+        '월';
     controller1 = TextEditingController(text: myProfile.email);
     controller2 = TextEditingController(text: myProfile.nickname);
-    controller3 = TextEditingController(text: myProfile.birthDay);
+    controller3 = TextEditingController(text: profile_BirthDay);
     myProfile = Get.find<ProfileController>().myProfile.value;
     return Scaffold(
         backgroundColor: Colors.white,
@@ -76,10 +88,24 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
               alignment: Alignment.center,
               child: TextButton(
                 child: regularTextCommon('수정하기', 14),
-                onPressed: () {
-                  //수정하기
-                  Get.to(() => EditProfilePage(),
-                      transition: Transition.native);
+                onPressed: () async {
+                  //수정하기전에 사용자 본인인증 체크 하여 없다면 본인인증
+                  final client = UserClient(dio);
+                  await client
+                      .checkPhoneAuth(ProfileController.to.myProfile.value.uid!)
+                      .then((value) {
+                    Get.to(() => EditProfilePage(),
+                        transition: Transition.native);
+                  }).catchError((e) {
+                    final res = (e as DioError).response;
+                    if (res!.statusCode == 404) {
+                      goToPhoneAuthDialog(context);
+                      print('회원의 인증정보를 찾을수 없음');
+                    }
+                  });
+
+                  // Get.to(() => EditProfilePage(),
+                  //     transition: Transition.native);
                 },
               ),
             )
@@ -115,26 +141,31 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                 clipBehavior: Clip.none,
                 alignment: Alignment.bottomRight,
                 children: [
-                  myProfile.avataUrl == null
-                      ? Image.asset('assets/images/profile-big.png')
-                      : Container(
-                          width: 100,
-                          height: 100,
-                          child: image == null
-                              ? CircleAvatar(
-                                  radius: 50,
-                                  backgroundImage: NetworkImage(
-                                      myProfile.avataUrl.toString()),
-                                )
-                              : ClipOval(
-                                  child: Image.file(
-                                    image!,
-                                    width: 100,
-                                    height: 100,
-                                    fit: BoxFit.cover,
+                  Obx(
+                    () => ProfileController.to.myProfile.value.avataUrl == null
+                        ? Image.asset('assets/images/profile-big.png')
+                        : Container(
+                            width: 100,
+                            height: 100,
+                            child: image == null
+                                ? CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage: NetworkImage(
+                                      ProfileController
+                                          .to.myProfile.value.avataUrl
+                                          .toString(),
+                                    ),
+                                  )
+                                : ClipOval(
+                                    child: Image.file(
+                                      image!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                        ),
+                          ),
+                  ),
                   Positioned(
                     right: -10,
                     bottom: -10,
@@ -161,6 +192,7 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: spacing_xxl),
                 child: Form(
+                  key: ProfileController.to.showProfileKey,
                   child: Theme(
                     data: ThemeData(
                         primaryColor: grey_1,
@@ -169,6 +201,51 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                     child: Container(
                       child: Column(
                         children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('닉네임',
+                                    style: TextStyle(
+                                      fontFamily: 'NotoSansKR',
+                                      color: black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    )),
+                              ),
+                            ],
+                          ),
+                          TextField(
+                            controller: ProfileController.to.nickNameController,
+                            keyboardType: TextInputType.emailAddress,
+                            style: TextStyle(
+                              fontFamily: 'NotoSans',
+                              color: textfields,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: grey_3,
+                              enabled: false,
+                              contentPadding: EdgeInsets.all(8),
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide: BorderSide(color: grey_3, width: 1),
+                              // ),
+                              focusColor: Colors.red,
+                              // focusedBorder: OutlineInputBorder(
+                              //     borderSide: BorderSide(
+                              //         color: Colors.black, width: 0.1)),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: spacing_xl),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -199,20 +276,20 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                               filled: true,
                               fillColor: grey_3,
                               contentPadding: EdgeInsets.all(8),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: grey_2, width: 0.5),
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: grey_2, width: 0.5),
+                              // ),
+                              // focusedBorder: OutlineInputBorder(
+                              //     borderSide:
+                              //         BorderSide(color: grey_1, width: 0.5)),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(4),
                               ),
                               focusColor: Colors.red,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: grey_1, width: 0.5)),
                               counterStyle: TextStyle(color: grey_1),
                               labelStyle: TextStyle(color: grey_1),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1),
-                              ),
                             ),
                           ),
                           SizedBox(height: spacing_xl),
@@ -221,53 +298,8 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text('닉네임',
-                                    style: TextStyle(
-                                      fontFamily: 'NotoSansKR',
-                                      color: black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                    )),
-                              ),
-                            ],
-                          ),
-                          TextField(
-                            controller: controller2,
-                            keyboardType: TextInputType.emailAddress,
-                            style: TextStyle(
-                              fontFamily: 'NotoSans',
-                              color: textfields,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: grey_3,
-                              enabled: false,
-                              contentPadding: EdgeInsets.all(8),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: grey_2, width: 0.5),
-                              ),
-                              focusColor: Colors.red,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.black, width: 2)),
-                              border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: grey_1, width: 0.5),
-                              ),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  '생년월일',
+                                  '생년월',
                                   style: TextStyle(
                                     fontFamily: 'NotoSansKR',
                                     color: black,
@@ -285,8 +317,7 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                               // showDateDialog(context); //데이터 피커 변경 2022-02-07
                             },
                             controller: controller3,
-                            readOnly: true,
-                            enabled: true,
+                            enabled: false,
                             style: TextStyle(
                               fontFamily: 'NotoSans',
                               color: textfields,
@@ -298,14 +329,7 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                               filled: true,
                               fillColor: grey_3,
                               contentPadding: EdgeInsets.all(8),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: grey_2, width: 0.5),
-                              ),
                               focusColor: Colors.red,
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: grey_1, width: 0.5)),
                               counterStyle: TextStyle(
                                 fontFamily: 'NotoSansKR',
                                 color: black,
@@ -320,15 +344,22 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
                               ),
-                              suffixIcon: IconButton(
-                                  icon: Icon(Icons.expand_more),
-                                  color: Colors.black,
-                                  onPressed: () {
-                                    // print('aaa');
-                                  }),
+                              // suffixIcon: IconButton(
+                              //     icon: Icon(Icons.expand_more),
+                              //     color: Colors.black,
+                              //     onPressed: () {
+                              //       // print('aaa');
+                              //     }),
+                              // focusedBorder: OutlineInputBorder(
+                              //     borderSide:
+                              //         BorderSide(color: grey_1, width: 0.5)),
+                              // enabledBorder: OutlineInputBorder(
+                              //   borderSide:
+                              //       BorderSide(color: grey_2, width: 0.5),
+                              // ),
                               border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.black, width: 1),
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(4),
                               ),
                             ),
                           ),
@@ -353,16 +384,20 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                           ),
                           Row(
                             children: [
-                              Obx(() =>
-                                  Get.find<ProfileController>().gender.value !=
-                                          true
-                                      ? _groupButtonWomenCheck()
-                                      : _groupButtonWomenUnCheck()),
-                              Obx(() =>
-                                  Get.find<ProfileController>().gender.value !=
-                                          true
-                                      ? _groupButtonManUnCheck()
-                                      : _groupButtonManCheck()),
+                              Obx(() => Get.find<ProfileController>()
+                                          .myProfile
+                                          .value
+                                          .gender ==
+                                      '남자'
+                                  ? _groupButtonWomenUnCheck()
+                                  : _groupButtonWomenCheck()),
+                              Obx(() => Get.find<ProfileController>()
+                                          .myProfile
+                                          .value
+                                          .gender ==
+                                      '남자'
+                                  ? _groupButtonManCheck()
+                                  : _groupButtonManUnCheck()),
                             ],
                           ),
                           SizedBox(height: spacing_xl),
@@ -386,23 +421,24 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
       child: InkWell(
         onTap: () {
           // Get.find<ProfileController>().toggleMan(true);
+          // Get.find<ProfileController>().changeGender('여자');
         },
         child: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Colors.transparent,
+            color: grey_3,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
-            border: Border(
-              right:
-                  BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
-              left:
-                  BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
-              top:
-                  BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
-              bottom:
-                  BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
-            ),
+            // border: Border(
+            //   right:
+            //       BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
+            //   left:
+            //       BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
+            //   top:
+            //       BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
+            //   bottom:
+            //       BorderSide(color: grey_2, width: 1, style: BorderStyle.solid),
+            // ),
           ),
           width: Get.mediaQuery.size.width,
           height: 40,
@@ -426,25 +462,29 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
       flex: 1,
       child: InkWell(
         onTap: () {
+          // setState(() {
+          //   isChanged = true;
+          // });
+          // Get.find<ProfileController>().changeGender('남자');
           // Get.find<ProfileController>().toggleMan(false);
         },
         child: Container(
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: Colors.transparent,
+              color: grey_3,
               borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(4),
                   topRight: Radius.circular(4)),
-              border: Border(
-                right: BorderSide(
-                    color: grey_2, width: 1, style: BorderStyle.solid),
-                left: BorderSide(
-                    color: grey_2, width: 1, style: BorderStyle.solid),
-                top: BorderSide(
-                    color: grey_2, width: 1, style: BorderStyle.solid),
-                bottom: BorderSide(
-                    color: grey_2, width: 1, style: BorderStyle.solid),
-              ),
+              // border: Border(
+              //   right: BorderSide(
+              //       color: grey_2, width: 1, style: BorderStyle.solid),
+              //   left: BorderSide(
+              //       color: grey_2, width: 1, style: BorderStyle.solid),
+              //   top: BorderSide(
+              //       color: grey_2, width: 1, style: BorderStyle.solid),
+              //   bottom: BorderSide(
+              //       color: grey_2, width: 1, style: BorderStyle.solid),
+              // ),
             ),
             width: Get.mediaQuery.size.width,
             height: 40,
@@ -466,18 +506,18 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: grey_3,
           borderRadius: BorderRadius.only(
               bottomRight: Radius.circular(4), topRight: Radius.circular(4)),
           border: Border(
             right: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
             left: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
             top: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
             bottom: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
           ),
         ),
         width: Get.mediaQuery.size.width,
@@ -486,7 +526,7 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
           '남자',
           style: TextStyle(
             fontFamily: 'NotoSans',
-            color: primary_light,
+            color: textfields,
             fontSize: 12,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -502,18 +542,18 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
       child: Container(
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: grey_3,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(4), bottomLeft: Radius.circular(4)),
           border: Border(
             right: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
             left: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
             top: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
             bottom: BorderSide(
-                color: primary_light, width: 1, style: BorderStyle.solid),
+                color: textfields, width: 1, style: BorderStyle.solid),
           ),
         ),
         width: Get.mediaQuery.size.width,
@@ -522,7 +562,7 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
           '여자',
           style: TextStyle(
             fontFamily: 'NotoSans',
-            color: primary_light,
+            color: textfields,
             fontSize: 12,
             fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
@@ -690,6 +730,89 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
             Get.back();
           },
         );
+      },
+    );
+  }
+
+  void goToPhoneAuthDialog(context) async {
+    await showAnimatedDialog(
+      context: context,
+      barrierDismissible: false,
+      animationType: DialogTransitionType.fade,
+      curve: Curves.fastOutSlowIn,
+      builder: (BuildContext context) {
+        return PlinicDialogTwoButton(
+          button1Text: '본인인증 하러가기',
+          button2Text: '취소',
+          title: '알림',
+          content: '정보를 수정하기 위해서 최초1 회\n본인인증이 필요합니다.',
+          button1Click: () {
+            Get.back();
+            goBootpayRequest(context);
+          },
+          button2Click: () {
+            Get.back();
+          },
+        );
+      },
+    );
+  }
+
+  void goBootpayRequest(BuildContext context) async {
+    var payload = Payload();
+    payload.androidApplicationId = '60e24e465b2948001ddc501b';
+    payload.iosApplicationId = '60e24e465b2948001ddc501c';
+
+    payload.pg = 'danal';
+    payload.method = 'auth';
+    payload.name = '본인인증';
+    payload.orderId = DateTime.now().millisecondsSinceEpoch.toString();
+
+    var extra = Extra();
+    extra.appScheme = 'bootpaySample';
+
+    Bootpay().request(
+      context: context,
+      payload: payload,
+      onDone: (String json) async {
+        Map<String, dynamic> test = jsonDecode(json); //String to Json으로 변환
+        var test2 = PhoneAuth.fromJson(test); //JSON PhonAuth모델화
+        // print('onDone111: $test2');
+        // print('onDone222: $test');
+        test2.uid = ProfileController.to.myProfile.value.uid;
+        test2.email = ProfileController.to.myProfile.value.email;
+        final client = UserClient(dio);
+        //사용자 본인인증 데이터 저장 2022-02-09
+        await client.savePhoneAuth(test2).then((value) {
+          //처리가 완료 되면은 해당 페이지를 닫고 수정 페이지로 이동한다.
+          Get.back();
+          Get.to(() => EditProfilePage());
+        });
+      },
+      onReady: (String json) {
+        //flutter는 가상계좌가 발급되었을때  onReady가 호출되지 않는다. onDone에서 처리해주어야 한다.
+        print('onReady: $json');
+      },
+      onCancel: (String json) {
+        print('onCancel: $json');
+        Get.back();
+      },
+      onError: (String json) {
+        print('onError: $json');
+        Get.back();
+      },
+    );
+  }
+
+  Widget futureTest() {
+    return FutureBuilder(
+      future: UserClient(dio)
+          .checkPhoneAuth(ProfileController.to.myProfile.value.uid!),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasData) {}
+        return CircularProgressIndicator();
       },
     );
   }
