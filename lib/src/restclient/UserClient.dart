@@ -39,6 +39,20 @@ abstract class UserClient {
   @MultiPart()
   Future<GetUser> userUpdateProfileImage(
       @Part() File images, @Part() String uid, @Part() String email);
+
+  @GET('/user/getUserPush/{uid}')
+  Future<UserPush> getUserNormalPush(@Path('uid') String uid);
+
+  @PATCH('/user/updateNormalPush/{uid}/{useYN}')
+  Future<UserPush> updateNormalPush(
+      @Path('uid') String uid, @Path('useYN') bool useYN);
+
+  @GET('/user/getUserMarketingPush/{uid}')
+  Future<UserPush> getUserMarketingPush(@Path('uid') String uid);
+
+  @PATCH('/user/updateMarketingPush/{uid}/{useYN}')
+  Future<UserPush> updateMarketingPush(
+      @Path('uid') String uid, @Path('useYN') bool useYN);
 }
 
 @JsonSerializable()
@@ -128,4 +142,19 @@ class PhoneAuth {
   factory PhoneAuth.fromJson(Map<String, dynamic> json) =>
       _$PhoneAuthFromJson(json);
   Map<String, dynamic> toJson() => _$PhoneAuthToJson(this);
+}
+
+@JsonSerializable()
+class UserPush {
+  String? id;
+  String? uid;
+  bool? useYN;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  UserPush({this.id, this.uid, this.useYN, this.createdAt, this.updatedAt});
+
+  factory UserPush.fromJson(Map<String, dynamic> json) =>
+      _$UserPushFromJson(json);
+  Map<String, dynamic> toJson() => _$UserPushToJson(this);
 }

@@ -90,6 +90,26 @@ Map<String, dynamic> _$PhoneAuthToJson(PhoneAuth instance) => <String, dynamic>{
       'gender': instance.gender,
     };
 
+UserPush _$UserPushFromJson(Map<String, dynamic> json) => UserPush(
+      id: json['id'] as String?,
+      uid: json['uid'] as String?,
+      useYN: json['useYN'] as bool?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+    );
+
+Map<String, dynamic> _$UserPushToJson(UserPush instance) => <String, dynamic>{
+      'id': instance.id,
+      'uid': instance.uid,
+      'useYN': instance.useYN,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -242,6 +262,71 @@ class _UserClient implements UserClient {
                 queryParameters: queryParameters, data: _data)
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = GetUser.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserPush> getUserNormalPush(uid) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserPush>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/getUserPush/${uid}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserPush.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserPush> updateNormalPush(uid, useYN) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserPush>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/updateNormalPush/${uid}/${useYN}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserPush.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserPush> getUserMarketingPush(uid) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserPush>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/getUserMarketingPush/${uid}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserPush.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserPush> updateMarketingPush(uid, useYN) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserPush>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, '/user/updateMarketingPush/${uid}/${useYN}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserPush.fromJson(_result.data!);
     return value;
   }
 

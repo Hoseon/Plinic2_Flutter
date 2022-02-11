@@ -166,26 +166,26 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
                                   ),
                           ),
                   ),
-                  Positioned(
-                    right: -10,
-                    bottom: -10,
-                    child: Container(
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xff9a5cf4)),
-                      child: InkWell(
-                        splashColor: grey_1,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.photo_camera,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            // bottomSheet();
-                          },
-                        ),
-                      ),
-                    ),
-                  )
+                  // Positioned(
+                  //   right: -10,
+                  //   bottom: -10,
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //         shape: BoxShape.circle, color: Color(0xff9a5cf4)),
+                  //     child: InkWell(
+                  //       splashColor: grey_1,
+                  //       child: IconButton(
+                  //         icon: Icon(
+                  //           Icons.photo_camera,
+                  //           color: Colors.white,
+                  //         ),
+                  //         onPressed: () {
+                  //           // bottomSheet();
+                  //         },
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
               SizedBox(height: 53),

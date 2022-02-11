@@ -188,13 +188,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     bottom: -10,
                     child: Container(
                       decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Color(0xff9a5cf4)),
+                          shape: BoxShape.circle,
+                          color: white,
+                          border: Border.all(color: grey_2)),
                       child: InkWell(
                         splashColor: grey_1,
                         child: IconButton(
                           icon: Icon(
-                            Icons.photo_camera,
-                            color: Colors.white,
+                            LineIcons.camera,
+                            color: grey_2,
+                            size: 30,
                           ),
                           onPressed: () {
                             pickImage(ImageSource.gallery);
