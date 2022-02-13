@@ -1,41 +1,28 @@
 import 'dart:convert';
 
-import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
+import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/appbar_title.dart';
 import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
-import 'package:plinic2/src/controller/my/MyAlarmController.dart';
 import 'package:plinic2/src/controller/my/myAddress_controller.dart';
+import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/pages/my/address/address_search.dart';
+import 'package:plinic2/src/restclient/UserClient.dart';
 
-class AddressPage extends StatefulWidget {
-  AddressPage({Key? key}) : super(key: key);
+class AddressUpdatePage extends StatelessWidget {
+  final UserAddress? userAddress;
 
-  @override
-  _AddressPageState createState() => _AddressPageState();
-}
-
-class _AddressPageState extends State<AddressPage> {
-  final TextEditingController _controller1 = TextEditingController();
-
-  final TextEditingController _controller2 = TextEditingController();
-
-  final TextEditingController _controller3 = TextEditingController();
-
-  final MaskedTextController _maskedTextController =
-      MaskedTextController(mask: '000-0000-0000');
-
-  bool isCheck = false;
-  bool isBtnCheck = false;
+  AddressUpdatePage({Key? key, required this.userAddress}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    MyAddressController.to.updateTempIsDefault(userAddress!.isDefault!);
     return Scaffold(
       appBar: AppBar(
-        title: AppbarTitle(title: '배송지등록'),
+        title: AppbarTitle(title: '배송지변경'),
         centerTitle: true,
         elevation: 0.3,
         backgroundColor: Colors.white,
@@ -69,41 +56,44 @@ class _AddressPageState extends State<AddressPage> {
                 SizedBox(height: spacing_s),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
-                  child: Container(
-                    // height: 48,
-                    child: TextField(
-                      controller: _controller1,
-                      onChanged: (value) {
-                        checkForm();
-                        // _controller1.text = value;
-                      },
-                      // textAlignVertical: TextAlignVertical.center,
-                      // keyboardType: TextInputType.text,
-                      style: TextStyle(
-                        fontFamily: 'NotoSans',
-                        color: black,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.normal,
-                      ),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: grey_2, width: 0.5),
-                        ),
-                        border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.red, width: 1)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: grey_1, width: 0.5),
-                        ),
-                        hintText: '이름을 입력해주세요',
-                        hintStyle: TextStyle(
+                  child: Form(
+                    key: MyAddressController.to.editAddressKey,
+                    child: Container(
+                      // height: 48,
+                      child: TextField(
+                        controller: MyAddressController.to.toNameTextController,
+                        onChanged: (value) {
+                          checkForm();
+                          // _controller1.text = value;
+                        },
+                        // textAlignVertical: TextAlignVertical.center,
+                        // keyboardType: TextInputType.text,
+                        style: TextStyle(
                           fontFamily: 'NotoSans',
-                          color: textfields,
+                          color: black,
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
+                        ),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.all(8),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: grey_2, width: 0.5),
+                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.red, width: 1)),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: grey_1, width: 0.5),
+                          ),
+                          hintText: '이름을 입력해주세요',
+                          hintStyle: TextStyle(
+                            fontFamily: 'NotoSans',
+                            color: textfields,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                            fontStyle: FontStyle.normal,
+                          ),
                         ),
                       ),
                     ),
@@ -127,7 +117,8 @@ class _AddressPageState extends State<AddressPage> {
                         flex: 2,
                         child: Container(
                           child: TextField(
-                            controller: _controller2,
+                            controller:
+                                MyAddressController.to.address1TextController,
                             onChanged: (value) {
                               checkForm();
                             },
@@ -183,7 +174,8 @@ class _AddressPageState extends State<AddressPage> {
                         flex: 2,
                         child: Container(
                           child: TextField(
-                            controller: _controller3,
+                            controller:
+                                MyAddressController.to.address2TextController,
                             onChanged: (value) {
                               checkForm();
                             },
@@ -238,7 +230,7 @@ class _AddressPageState extends State<AddressPage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
                   child: TextField(
-                    controller: _maskedTextController,
+                    controller: MyAddressController.to.phoneTextController,
                     textAlignVertical: TextAlignVertical.center,
                     keyboardType: TextInputType.number,
                     onChanged: (value) {
@@ -277,14 +269,22 @@ class _AddressPageState extends State<AddressPage> {
                   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
                   child: Row(
                     children: [
-                      isCheck ? checkbox() : uncheckbox(),
+                      Obx(() => MyAddressController.to.tempIsDefault.value
+                          ? checkbox()
+                          : uncheckbox()),
+                      // isCheck ?
+                      // userAddress!.isDefault == true
+                      //     ? checkbox()
+                      //     : uncheckbox(),
                       SizedBox(width: 6),
                       buildText('기본배송지로 설정')
                     ],
                   ),
                 ),
                 SizedBox(height: 36),
-                isBtnCheck == true ? registButton() : unregistButton()
+                // isBtnCheck == true ?
+                registButton(),
+                //  : unregistButton()
               ],
             ),
           ),
@@ -293,156 +293,16 @@ class _AddressPageState extends State<AddressPage> {
     );
   }
 
-  Padding unregistButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
-      child: Container(
-        width: Get.mediaQuery.size.width,
-        height: 50,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(grey_2),
-            elevation: MaterialStateProperty.all<double>(0.0),
-          ),
-          onPressed: () {},
-          child: Text(
-            '등록하기',
-            style: TextStyle(
-              fontFamily: 'NotoSansKR',
-              color: grey_3,
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.normal,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Padding registButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
-      child: Container(
-        width: Get.mediaQuery.size.width,
-        height: 50,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
-            elevation: MaterialStateProperty.all<double>(0.0),
-          ),
-          onPressed: () async {
-            print(_controller1.text);
-            print(_controller2.text);
-            print(_controller3.text);
-            print(_maskedTextController.text);
-            await MyAddressController.to.creatUserAddress(
-                _controller1.text,
-                _controller2.text,
-                _controller3.text,
-                _maskedTextController.text,
-                isCheck);
-            Get.back();
-          },
-          child: Text(
-            '등록하기',
-            style: TextStyle(
-              fontFamily: 'NotoSansKR',
-              color: grey_3,
-              fontSize: 14,
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.normal,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Container checkbox() {
-    return Container(
-      color: Colors.transparent,
-      child: IconButton(
-        padding: EdgeInsets.all(0),
-        constraints: BoxConstraints(),
-        icon: Icon(
-          Icons.check_circle,
-        ),
-        onPressed: () {
-          setState(() {
-            isCheck = false;
-          });
-        },
-        color: primaryColor,
-      ),
-    );
-  }
-
-  Widget uncheckbox() {
-    return Container(
-      color: Colors.transparent,
-      child: IconButton(
-        padding: EdgeInsets.all(0),
-        constraints: BoxConstraints(),
-        icon: Icon(
-          Icons.check_circle_outline,
-          color: grey_2,
-        ),
-        onPressed: () {
-          setState(() {
-            isCheck = true;
-          });
-        },
-        color: Colors.black,
-      ),
-    );
-  }
-
-  Text buildText(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontFamily: 'NotoSansKR',
-        color: black,
-        fontSize: 14,
-        fontWeight: FontWeight.w700,
-        fontStyle: FontStyle.normal,
-      ),
-    );
-  }
-
-  Widget findPostButton() {
-    return Container(
-      height: 48,
-      width: 200,
-      child: ElevatedButton(
-        style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all<Color>(primaryColor)),
-        onPressed: () async {
-          var value = await Get.to(() => AddressSearchPage());
-          if (value != null) {
-            Map<String, dynamic> value2 = json.decode(value);
-            setState(() {
-              _controller2.text = value2['address'];
-              _controller3.text =
-                  value2['buildingName'] != '' ? value2['buildingName'] : '';
-              // _controller1.text = value.bname.toString();
-              // _controller1.text = value.bname.toString();
-            });
-          }
-        },
-        child: Text(
-          '주소찾기',
-          style: TextStyle(
-            fontFamily: 'NotoSansKR',
-            color: white,
-            fontSize: 13,
-            fontWeight: FontWeight.w700,
-            fontStyle: FontStyle.normal,
-          ),
-        ),
-      ),
-    );
+  void checkForm() {
+    // if (_controller1.text != '' &&
+    //         _controller2.text != '' &&
+    //         _controller3.text != ''
+    //     //  && _maskedTextController.text != ''
+    //     ) {
+    //   // setState(() {
+    //   //   isBtnCheck = true;
+    //   // });
+    // }
   }
 
   void isSavePost(context) async {
@@ -471,14 +331,175 @@ class _AddressPageState extends State<AddressPage> {
     );
   }
 
-  void checkForm() {
-    if (_controller1.text != '' &&
-        _controller2.text != '' &&
-        _controller3.text != '' &&
-        _maskedTextController.text != '') {
-      setState(() {
-        isBtnCheck = true;
-      });
-    }
+  Text buildText(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+        fontFamily: 'NotoSansKR',
+        color: black,
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        fontStyle: FontStyle.normal,
+      ),
+    );
+  }
+
+  Widget findPostButton() {
+    return Container(
+      height: 48,
+      width: 200,
+      child: ElevatedButton(
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(primaryColor)),
+        onPressed: () async {
+          var value = await Get.to(() => AddressSearchPage());
+          if (value != null) {
+            Map<String, dynamic> value2 = json.decode(value);
+            MyAddressController.to.address1TextController!.text =
+                value2['address'];
+            MyAddressController.to.address2TextController!.text =
+                value2['buildingName'] != '' ? value2['buildingName'] : '';
+            // setState(() {
+            //   _controller2.text = value2['address'];
+
+            //   // _controller1.text = value.bname.toString();
+            //   // _controller1.text = value.bname.toString();
+            // });
+          }
+        },
+        child: Text(
+          '주소찾기',
+          style: TextStyle(
+            fontFamily: 'NotoSansKR',
+            color: white,
+            fontSize: 13,
+            fontWeight: FontWeight.w700,
+            fontStyle: FontStyle.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Container checkbox() {
+    return Container(
+      color: Colors.transparent,
+      child: IconButton(
+        padding: EdgeInsets.all(0),
+        constraints: BoxConstraints(),
+        icon: Icon(
+          Icons.check_circle,
+        ),
+        onPressed: () {
+          MyAddressController.to.updateTempIsDefault(false);
+        },
+        color: primaryColor,
+      ),
+    );
+  }
+
+  Widget uncheckbox() {
+    return Container(
+      color: Colors.transparent,
+      child: IconButton(
+        padding: EdgeInsets.all(0),
+        constraints: BoxConstraints(),
+        icon: Icon(
+          Icons.check_circle_outline,
+          color: grey_2,
+        ),
+        onPressed: () {
+          MyAddressController.to.updateTempIsDefault(true);
+        },
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Padding unregistButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+      child: Container(
+        width: Get.mediaQuery.size.width,
+        height: 50,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(grey_2),
+            elevation: MaterialStateProperty.all<double>(0.0),
+          ),
+          onPressed: () {},
+          child: Text(
+            '수정하기',
+            style: TextStyle(
+              fontFamily: 'NotoSansKR',
+              color: grey_3,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding registButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+      child: Container(
+        width: Get.mediaQuery.size.width,
+        height: 50,
+        child: ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
+            elevation: MaterialStateProperty.all<double>(0.0),
+          ),
+          onPressed: () async {
+            userAddress!.toName =
+                MyAddressController.to.toNameTextController!.text;
+            userAddress!.address1 =
+                MyAddressController.to.address1TextController!.text;
+            userAddress!.address2 =
+                MyAddressController.to.address2TextController!.text;
+            userAddress!.phone =
+                MyAddressController.to.phoneTextController!.text;
+            userAddress!.isDefault = MyAddressController.to.tempIsDefault.value;
+
+            print(userAddress!.toName.toString());
+            print(userAddress!.address1.toString());
+            print(userAddress!.address2.toString());
+            print(userAddress!.phone.toString());
+            print(userAddress!.isDefault);
+
+            await MyAddressController.to.updateUserAddress(
+                ProfileController.to.myProfile.value.uid,
+                userAddress!.id,
+                userAddress!);
+            // print(_controller1.text);
+            // print(_controller2.text);
+            // print(_controller3.text);
+            // print(_maskedTextController.text);
+            // await MyAddressController.to.creatUserAddress(
+            //     _controller1.text,
+            //     _controller2.text,
+            //     _controller3.text,
+            //     // _maskedTextController.text,
+            //     // isCheck
+            //     );
+            Get.back();
+          },
+          child: Text(
+            '등록하기',
+            style: TextStyle(
+              fontFamily: 'NotoSansKR',
+              color: grey_3,
+              fontSize: 14,
+              fontWeight: FontWeight.w700,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

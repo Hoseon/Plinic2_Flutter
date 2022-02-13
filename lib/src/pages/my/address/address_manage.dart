@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/custom_appbar.dart';
+import 'package:plinic2/src/component/loading.dart';
 import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
+import 'package:plinic2/src/controller/my/myAddress_controller.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/pages/my/address/address.dart';
+import 'package:plinic2/src/pages/my/address/address_update.dart';
+import 'package:plinic2/src/restclient/UserClient.dart';
 
 class AddressManagePage extends StatelessWidget {
   const AddressManagePage({Key? key}) : super(key: key);
@@ -13,53 +18,107 @@ class AddressManagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar('배송지관리'),
+      appBar: CustomAppbar('배송정보관리'),
       bottomNavigationBar: bottomButton(context),
       backgroundColor: Colors.white,
-      body: ListView.builder(
-        itemCount: 3,
-        itemBuilder: (_, index) {
-          if (index == 0) {
-            return Column(
-              children: [
-                SizedBox(height: spacing_xl),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
-                  child: Row(
-                    children: [
-                      Text(
-                        '배송지',
-                        style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          color: Color(0xff000000),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
-                      ),
-                      SizedBox(width: spacing_xxs),
-                      Text('11',
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            color: Color(0xff000000),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ))
-                    ],
-                  ),
-                ),
-              ],
-            );
+      // body: mainBody(),
+      body: initAddress(),
+    );
+  }
+
+  Widget initAddress() {
+    return GetX<MyAddressController>(
+      init: Get.put<MyAddressController>(MyAddressController()),
+      builder: (MyAddressController myAddressController) {
+        if (myAddressController.isLoading.value == false) {
+          if (myAddressController.userAddress.isNotEmpty) {
+            return mainBody(myAddressController);
+            // Text('데이터 있음 ${myAddressController.userAddress.length}');
           }
-          return AddressCard(
-            isDefault: true,
-            name: Get.find<ProfileController>().myProfile.value.name.toString(),
-            address: '서울특별시 송파구 송파대로 453, 레이크빌 빌딩 402호',
-            phoneNumber: '010-1234-5678',
-          );
-        },
-      ),
+          if (myAddressController.userAddress.isEmpty) {
+            return emptyAddress();
+          }
+        }
+        return LoadingPage();
+      },
+    );
+  }
+
+  Widget emptyAddress() {
+    return Column(
+      children: [
+        SizedBox(height: spacing_l),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+          child: Row(
+            children: [
+              Icon(LineIcons.commentDots, size: 20),
+              SizedBox(width: 5.5),
+              Text(
+                '등록된 배송정보가 존재하지 않습니다.',
+                style: TextStyle(
+                  fontFamily: 'NotoSans',
+                  color: black,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget mainBody(MyAddressController myAddressController) {
+    return ListView(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                '배송지',
+                style: TextStyle(
+                  fontFamily: 'NotoSans',
+                  color: black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+              SizedBox(width: 3),
+              Text(
+                myAddressController.userAddress.length.toString(),
+                style: TextStyle(
+                  fontFamily: 'NotoSans',
+                  color: black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          primary: false,
+          itemCount: myAddressController.userAddress.length,
+          itemBuilder: (_, index) {
+            return AddressCard(
+                id: myAddressController.userAddress[index].id!,
+                isDefault: myAddressController.userAddress[index].isDefault,
+                name: myAddressController.userAddress[index].toName!,
+                address:
+                    '${myAddressController.userAddress[index].address1}  ${myAddressController.userAddress[index].address2}',
+                phoneNumber: '${myAddressController.userAddress[index].phone}',
+                userAddress: myAddressController.userAddress[index]);
+          },
+        ),
+      ],
     );
   }
 
@@ -80,12 +139,12 @@ class AddressManagePage extends StatelessWidget {
           Get.to(() => AddressPage(), transition: Transition.native);
         },
         child: Text(
-          '배송지 추가',
+          '배송정보 추가 하기',
           style: TextStyle(
-            fontFamily: 'NotoSansKR',
-            color: Color(0xffffffff),
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
+            fontFamily: 'NotoSans',
+            color: white,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
             fontStyle: FontStyle.normal,
           ),
         ),
@@ -97,16 +156,17 @@ class AddressManagePage extends StatelessWidget {
 class AddressCard extends StatelessWidget {
   const AddressCard({
     Key? key,
+    required this.userAddress,
+    required this.id,
     this.isDefault,
     this.name,
     this.address,
     this.phoneNumber,
   }) : super(key: key);
 
+  final String? id, name, address, phoneNumber;
   final bool? isDefault;
-  final String? name;
-  final String? address;
-  final String? phoneNumber;
+  final UserAddress? userAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +263,12 @@ class AddressCard extends StatelessWidget {
                 data: ThemeData(splashColor: Colors.red),
                 child: Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      MyAddressController.to.preUpdateValue(userAddress!);
+                      Get.to(() => AddressUpdatePage(
+                            userAddress: userAddress!,
+                          ));
+                    },
                     style: ButtonStyle(
                         overlayColor:
                             MaterialStateProperty.resolveWith((states) {
@@ -234,7 +299,7 @@ class AddressCard extends StatelessWidget {
                     await showAnimatedDialog(
                       context: context,
                       barrierDismissible: true,
-                      animationType: DialogTransitionType.slideFromBottomFade,
+                      animationType: DialogTransitionType.fade,
                       curve: Curves.fastOutSlowIn,
                       builder: (BuildContext context) {
                         return PlinicDialogTwoButton(
@@ -243,6 +308,7 @@ class AddressCard extends StatelessWidget {
                           title: '알림',
                           content: '배송지를 삭제하시겠습니까?',
                           button1Click: () {
+                            MyAddressController.to.deleteUserAddress(id);
                             Get.back();
                           },
                           button2Click: () {

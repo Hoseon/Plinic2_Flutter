@@ -110,6 +110,39 @@ Map<String, dynamic> _$UserPushToJson(UserPush instance) => <String, dynamic>{
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 
+UserAddress _$UserAddressFromJson(Map<String, dynamic> json) => UserAddress(
+      id: json['_id'] as String?,
+      uid: json['uid'] as String?,
+      email: json['email'] as String?,
+      toName: json['toName'] as String?,
+      postNumber: json['postNumber'] as int?,
+      address1: json['address1'] as String?,
+      address2: json['address2'] as String?,
+      phone: json['phone'] as String?,
+      isDefault: json['isDefault'] as bool?,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+    );
+
+Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'uid': instance.uid,
+      'email': instance.email,
+      'toName': instance.toName,
+      'postNumber': instance.postNumber,
+      'address1': instance.address1,
+      'address2': instance.address2,
+      'phone': instance.phone,
+      'isDefault': instance.isDefault,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -327,6 +360,74 @@ class _UserClient implements UserClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserPush.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<UserAddress>> getUserAddress(uid) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<UserAddress>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/getUserAddress/${uid}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => UserAddress.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<UserAddress> createAddress(uid, body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserAddress>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/createAddress/${uid}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserAddress> deleteUserAddress(id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserAddress>(
+            Options(method: 'DELETE', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/delAddress/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UserAddress> updateUserAddress(uid, id, body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserAddress>(
+            Options(method: 'PATCH', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/user/updateAddress/${uid}/${id}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserAddress.fromJson(_result.data!);
     return value;
   }
 

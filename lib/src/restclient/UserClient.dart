@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:plinic2/src/model/user_model.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 
@@ -53,6 +52,24 @@ abstract class UserClient {
   @PATCH('/user/updateMarketingPush/{uid}/{useYN}')
   Future<UserPush> updateMarketingPush(
       @Path('uid') String uid, @Path('useYN') bool useYN);
+
+  //사용자 주소 정보 가져오기
+  @GET('/user/getUserAddress/{uid}')
+  Future<List<UserAddress>> getUserAddress(@Path('uid') String uid);
+
+  //사용자 주소 정보 저장하기
+  @POST('/user/createAddress/{uid}')
+  Future<UserAddress> createAddress(
+      @Path('uid') String uid, @Body() UserAddress body);
+
+  //사용자 주소 정보 삭제하기
+  @DELETE('/user/delAddress/{id}')
+  Future<UserAddress> deleteUserAddress(@Path('id') String id);
+
+  //사용자 주소 정보 수정하기
+  @PATCH('/user/updateAddress/{uid}/{id}')
+  Future<UserAddress> updateUserAddress(
+      @Path('uid') String uid, @Path('id') String id, @Body() UserAddress body);
 }
 
 @JsonSerializable()
@@ -157,4 +174,37 @@ class UserPush {
   factory UserPush.fromJson(Map<String, dynamic> json) =>
       _$UserPushFromJson(json);
   Map<String, dynamic> toJson() => _$UserPushToJson(this);
+}
+
+@JsonSerializable()
+class UserAddress {
+  @JsonKey(name: '_id')
+  String? id;
+  String? uid;
+  String? email;
+  String? toName;
+  int? postNumber;
+  String? address1;
+  String? address2;
+  String? phone;
+  bool? isDefault;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  UserAddress(
+      {this.id,
+      this.uid,
+      this.email,
+      this.toName,
+      this.postNumber,
+      this.address1,
+      this.address2,
+      this.phone,
+      this.isDefault,
+      this.createdAt,
+      this.updatedAt});
+
+  factory UserAddress.fromJson(Map<String, dynamic> json) =>
+      _$UserAddressFromJson(json);
+  Map<String, dynamic> toJson() => _$UserAddressToJson(this);
 }

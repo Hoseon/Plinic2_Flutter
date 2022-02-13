@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
+import 'package:plinic2/src/component/loading.dart';
 import 'package:plinic2/src/controller/login_controller.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -43,6 +44,10 @@ class _CheckLoginState extends State<CheckLogin> {
           // } else {
           //   ProfileController.to.authStateChange(snapshot.data!);
           // }
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return LoadingPage();
         }
 
         if (snapshot.hasData) {

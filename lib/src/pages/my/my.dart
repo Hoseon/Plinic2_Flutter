@@ -5,6 +5,7 @@ import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/common_text.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/pages/home/home_main.dart';
+import 'package:plinic2/src/pages/my/address/address_manage.dart';
 import 'package:plinic2/src/pages/my/alarm/my_alarm.dart';
 import 'package:plinic2/src/pages/my/show_profile.dart';
 import 'package:plinic2/src/pages/my/my_test.dart';
@@ -71,7 +72,7 @@ class MyPage extends StatelessWidget {
         SizedBox(height: 40),
         buildMenuTile('카카오채널 문의하기', MyTestPage()),
         buildMenuTile('FAQ', HomeMainPage()),
-        buildMenuTile('배송정보관리', HomeMainPage()),
+        buildMenuTile('배송정보관리', AddressManagePage()),
         buildMenuTile('알림관리', MyAlarmPage()),
         buildMenuTile('공지사항', HomeMainPage()),
         buildMenuTile('설정', HomeMainPage()),
