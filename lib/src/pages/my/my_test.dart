@@ -10,6 +10,7 @@ import 'package:plinic2/src/pages/my/address/address.dart';
 import 'package:plinic2/src/pages/my/address/address_manage.dart';
 import 'package:plinic2/src/pages/my/badge/badge.dart';
 import 'package:plinic2/src/pages/my/cash/cash.dart';
+import 'package:plinic2/src/pages/my/setting/faq/faq.dart';
 import 'package:plinic2/src/pages/my/show_profile.dart';
 import 'package:plinic2/src/pages/my/notice/notice.dart';
 import 'package:plinic2/src/pages/my/post/my_post.dart';
@@ -264,7 +265,7 @@ class MyTestPage extends GetView<ProfileController> {
         CustomListTile(LineIcons.userFriends, '친구초대', '', Colors.black,
             () => {Get.to(() => InviteFriend())}),
         CustomListTile(LineIcons.questionCircle, 'FAQ', '', Colors.black,
-            () => {Get.to(() => InviteFriend())}),
+            () => {Get.to(() => FaqPage())}),
         CustomListTile(LineIcons.questionCircle, '문의하기', '', Colors.black,
             () => {Get.to(() => QnaPage(), transition: Transition.native)}),
         CustomListTile(LineIcons.bullhorn, '공지사항', '', Colors.black,

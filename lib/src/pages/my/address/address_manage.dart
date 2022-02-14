@@ -335,11 +335,11 @@ class AddressCard extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: spacing_xxl),
-        Divider(
-          color: grey_3,
-          thickness: 15,
-        )
+        // SizedBox(height: spacing_xxl),
+        // Divider(
+        //   color: grey_3,
+        //   thickness: 15,
+        // )
       ],
     );
   }

@@ -151,7 +151,7 @@ Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
 
 class _UserClient implements UserClient {
   _UserClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://admin.g1p.xyz';
+    baseUrl ??= 'http://localhost:8001';
   }
 
   final Dio _dio;

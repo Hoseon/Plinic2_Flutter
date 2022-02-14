@@ -52,9 +52,18 @@ class FaqPage extends GetView<FaqController> {
   Widget _faq1() {
     return Column(
       children: [
-        FAQTiles(title: '구매하면 혜택이 어떻게 되나요?', content: 'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
-        FAQTiles(title: 'Plinic은 어떤 서비스인가요?', content: 'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
-        FAQTiles(title: '친구초대는 어떻게 하나요?', content: 'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
+        FAQTiles(
+            title: '구매하면 혜택이 어떻게 되나요?',
+            content:
+                'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
+        FAQTiles(
+            title: 'Plinic은 어떤 서비스인가요?',
+            content:
+                'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
+        FAQTiles(
+            title: '친구초대는 어떻게 하나요?',
+            content:
+                'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
       ],
     );
   }
@@ -62,9 +71,18 @@ class FaqPage extends GetView<FaqController> {
   Widget _faq2() {
     return Column(
       children: [
-        FAQTiles(title: '회원만의 혜택이 있나요?', content: 'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
-        FAQTiles(title: '회원 포인트가 궁금해요', content: 'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
-        FAQTiles(title: '회원탈퇴는 어떻게 하나요?', content: 'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
+        FAQTiles(
+            title: '회원만의 혜택이 있나요?',
+            content:
+                'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
+        FAQTiles(
+            title: '회원 포인트가 궁금해요',
+            content:
+                'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
+        FAQTiles(
+            title: '회원탈퇴는 어떻게 하나요?',
+            content:
+                'Plinic 서비스를 구독하시면 회원님의 피부 타입에 \n맞는 구독박스를 매월 발송해 드립니다.\n발송된 구독박스를 통해 회원님의 피부를 관리해보세요.'),
       ],
     );
   }
@@ -121,7 +139,7 @@ class FaqPage extends GetView<FaqController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              '상품',
+              '기타',
               style: TextStyle(
                 fontFamily: 'NotoSansKR',
                 color: Colors.black,
@@ -148,7 +166,7 @@ class FaqPage extends GetView<FaqController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              '상품',
+              '기타',
               style: TextStyle(
                 fontFamily: 'NotoSansKR',
                 color: grey_1,
@@ -175,7 +193,7 @@ class FaqPage extends GetView<FaqController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              '구독서비스',
+              '케어',
               style: TextStyle(
                 fontFamily: 'NotoSansKR',
                 color: Colors.black,
@@ -202,7 +220,7 @@ class FaqPage extends GetView<FaqController> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24.0),
             child: Text(
-              '구독서비스',
+              '케어',
               style: TextStyle(
                 fontFamily: 'NotoSansKR',
                 color: grey_1,
@@ -380,7 +398,6 @@ class FAQTiles extends StatelessWidget {
             ],
           ),
         ),
-        
         Divider(
           height: 0.1,
         )

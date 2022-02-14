@@ -261,7 +261,7 @@ class _AddressPageState extends State<AddressPage> {
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: grey_1, width: 0.5),
                       ),
-                      hintText: '휴대폰번호를 인증해주세요',
+                      hintText: '휴대폰번호를 입력해주세요',
                       hintStyle: TextStyle(
                         fontFamily: 'NotoSans',
                         color: textfields,

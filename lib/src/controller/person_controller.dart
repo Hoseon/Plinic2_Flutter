@@ -4,7 +4,6 @@ import 'package:plinic2/src/model/person_model.dart';
 import 'package:plinic2/src/repository/movie_repository.dart';
 
 class PersonController extends GetxController {
-
   final MovieRepository _movieRepository = MovieRepository();
   final RxList<Person> _person = RxList<Person>();
   RxInt pageView = 1.obs;
@@ -18,12 +17,10 @@ class PersonController extends GetxController {
     // _event();
     var listPerson = await _movieRepository.loadMovies(pageView.toString());
     _person(listPerson);
-
-  }  
+  }
 
   @override
   void onClose() {
-    // TODO: implement onClose
     print('클로즈됨 - 스크롤 컨트롤러');
     // scrollController.dispose();
     super.onClose();
@@ -36,16 +33,18 @@ class PersonController extends GetxController {
   }
 
   void _event() {
-    scrollController.addListener((){
-      if(scrollController.position.pixels == scrollController.position.maxScrollExtent){
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
         reload();
       }
     });
   }
 
-  void reload() async{
+  void reload() async {
     pageView++;
-    var listUpdatePerson = await _movieRepository.loadMovies(pageView.toString());
+    var listUpdatePerson =
+        await _movieRepository.loadMovies(pageView.toString());
     _person.addAll(listUpdatePerson);
   }
 }

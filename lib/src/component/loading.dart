@@ -11,7 +11,7 @@ class LoadingPage extends StatelessWidget {
       backgroundColor: white,
       body: Center(
         child: SpinKitChasingDots(
-          duration: Duration(seconds: 5),
+          duration: Duration(seconds: 3),
           size: 140,
           color: primary,
         ),

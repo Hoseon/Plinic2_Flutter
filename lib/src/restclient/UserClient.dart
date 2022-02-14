@@ -6,8 +6,8 @@ import 'package:dio/dio.dart';
 
 part 'UserClient.g.dart';
 
-@RestApi(baseUrl: 'https://admin.g1p.xyz') //production
-// @RestApi(baseUrl: 'http://localhost:8001') //develoment
+// @RestApi(baseUrl: 'https://admin.g1p.xyz') //production
+@RestApi(baseUrl: 'http://localhost:8001') //develoment
 abstract class UserClient {
   factory UserClient(Dio dio, {String baseUrl}) = _UserClient;
 
