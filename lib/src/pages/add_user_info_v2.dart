@@ -61,6 +61,8 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
 
         if (mode == 'kakao') {
           signInWithKakao(credential, agree);
+        } else if (mode == 'apple') {
+          signInWithApple(credential, agree);
         } else {
           signInWithGoogle(credential, agree);
         }
@@ -535,5 +537,27 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
             transition: Transition.native, arguments: {'agree': agree});
       },
     );
+  }
+
+  Future<void> signInWithApple(credential, agree) async {
+    //파이어베이스 AUTH인증과 동시에 회원가입 페이지로 이동하는곳
+    // Once signed in, return the UserCredential
+    // ProfileController.to.addInfoV2(
+    //     _textEditingController1.text + '_' + _textEditingController2.text,
+    //     TermsCheckController.to.isMan.value);
+
+    return await FirebaseAuth.instance
+        .signInWithCredential(credential)
+        .then((value) {
+      Get.to(() => UserRegisterPage(),
+          transition: Transition.native, arguments: {'agree': agree});
+    });
+    // await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
+    // return await FirebaseAuth.instance.signInWithCustomToken(credential).then(
+    //   (sucess) {
+    //     Get.to(() => UserRegisterPage(),
+    //         transition: Transition.native, arguments: {'agree': agree});
+    //   },
+    // );
   }
 }

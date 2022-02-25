@@ -34,7 +34,7 @@ Map<String, dynamic> _$ScNoticeToJson(ScNotice instance) => <String, dynamic>{
 
 class _NoticeClient implements NoticeClient {
   _NoticeClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://localhost:8001';
+    baseUrl ??= 'https://admin.g1p.xyz';
   }
 
   final Dio _dio;

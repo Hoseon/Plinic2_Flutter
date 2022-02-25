@@ -222,14 +222,19 @@ class AddressCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
           child: Row(
             children: [
-              Text(
-                address.toString(),
-                style: TextStyle(
-                  fontFamily: 'NotoSansKR',
-                  color: Color(0xff000000),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
+              Container(
+                width: Get.mediaQuery.size.width * 0.85,
+                child: Text(
+                  address.toString(),
+                  style: TextStyle(
+                    fontFamily: 'NotoSansKR',
+                    color: Color(0xff000000),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

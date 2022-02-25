@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plinic2/src/config/environment.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/restclient/UserClient.dart';
 
@@ -72,8 +73,13 @@ class MyAddressController extends GetxController {
     return userAddress;
   }
 
-  Future<RxList<UserAddress>> creatUserAddress(String name, String address,
-      String address_detail, String address_phone, bool addressDefault) async {
+  Future<RxList<UserAddress>> creatUserAddress(
+      String name,
+      String address,
+      String address_detail,
+      String address_phone,
+      String postNumber,
+      bool addressDefault) async {
     var client = UserClient(dio);
 
     toName(name);
@@ -91,6 +97,7 @@ class MyAddressController extends GetxController {
           address1: address1.value,
           address2: address2.value,
           phone: phone.value,
+          postNumber: int.parse(postNumber),
           isDefault: isDefault.value),
     );
     isLoading(true);

@@ -78,10 +78,10 @@ class Tabs extends GetView<TabsController> {
                 'assets/images/tabs/bottom-user-inactive.svg',
                 'assets/images/tabs/bottom-user.svg',
                 '마이'),
-            buildBottomNavigationBarItem(
-                'assets/images/tabs/bottom-user-inactive.svg',
-                'assets/images/tabs/bottom-user.svg',
-                'Temp'),
+            // buildBottomNavigationBarItem(
+            //     'assets/images/tabs/bottom-user-inactive.svg',
+            //     'assets/images/tabs/bottom-user.svg',
+            //     'Temp'),
           ],
         ),
       ),

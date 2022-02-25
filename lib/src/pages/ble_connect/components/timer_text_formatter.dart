@@ -16,6 +16,7 @@ class TimerTextFormatter {
     // int hundreds = (milliseconds / 10).truncate();
     // int seconds = (hundreds / 100).truncate();
     int minutes = (seconds / 60).truncate();
+    int hours = (minutes / 60).truncate();
 
     String minutesStr = (minutes % 60).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
@@ -23,5 +24,20 @@ class TimerTextFormatter {
 
     // return "$minutesStr:$secondsStr.$hundredsStr"; //2021-09-24 미리세컨드 까지 표현
     return '$minutesStr:$secondsStr';
+  }
+
+  static String hourFormat(int seconds) {
+    // int hundreds = (milliseconds / 10).truncate();
+    // int seconds = (hundreds / 100).truncate();
+    int minutes = (seconds / 60).truncate();
+    int hours = (minutes / 60).truncate();
+
+    String hoursStr = (hours % 60).toString().padLeft(2, '0');
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+    // String hundredsStr = (hundreds % 100).toString().padLeft(2, '0');
+
+    // return "$minutesStr:$secondsStr.$hundredsStr"; //2021-09-24 미리세컨드 까지 표현
+    return '$hoursStr:$minutesStr:$secondsStr';
   }
 }

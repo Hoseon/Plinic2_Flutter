@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/custom_appbar.dart';
 import 'package:plinic2/src/component/loading.dart';
+import 'package:plinic2/src/config/environment.dart';
 import 'package:plinic2/src/model/sample_noticedata.dart';
 import 'package:plinic2/src/pages/my/notice/notice_detail.dart';
 import 'package:plinic2/src/restclient/NoticeClient.dart';
@@ -43,7 +44,7 @@ class NoticePage extends StatelessWidget {
     return Theme(
       data: Theme.of(context).copyWith(
         dividerColor: Colors.transparent,
-        unselectedWidgetColor: grey_1,
+        unselectedWidgetColor: Colors.transparent,
       ),
       child: ExpansionTile(
         tilePadding:
@@ -91,10 +92,10 @@ class NoticePage extends StatelessWidget {
           ],
         ),
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
-            child: Divider(color: grey_2),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+          //   child: Divider(color: grey_2),
+          // ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
             child: Row(

@@ -6,8 +6,9 @@ import 'package:dio/dio.dart';
 
 part 'UserClient.g.dart';
 
-// @RestApi(baseUrl: 'https://admin.g1p.xyz') //production
-@RestApi(baseUrl: 'http://localhost:8001') //develoment
+// @RestApi() //production
+@RestApi(baseUrl: 'https://admin.g1p.xyz') //production
+// @RestApi(baseUrl: 'http://localhost:8001') //develoment
 abstract class UserClient {
   factory UserClient(Dio dio, {String baseUrl}) = _UserClient;
 
@@ -70,6 +71,10 @@ abstract class UserClient {
   @PATCH('/user/updateAddress/{uid}/{id}')
   Future<UserAddress> updateUserAddress(
       @Path('uid') String uid, @Path('id') String id, @Body() UserAddress body);
+
+  //사용자 탈퇴 신청정보 저장하기
+  @POST('/unregister')
+  Future<UnRegisterModel> createUnRegister(@Body() UnRegisterModel body);
 }
 
 @JsonSerializable()
@@ -207,4 +212,39 @@ class UserAddress {
   factory UserAddress.fromJson(Map<String, dynamic> json) =>
       _$UserAddressFromJson(json);
   Map<String, dynamic> toJson() => _$UserAddressToJson(this);
+}
+
+@JsonSerializable()
+class UnRegisterModel {
+  @JsonKey(name: '_id')
+  String? id;
+  String? uid;
+  String? email;
+  String? phone;
+  String? birth;
+  String? name;
+  String? foreigner;
+  String? carrier;
+  int? gender;
+  DateTime? unRegisterAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  UnRegisterModel(
+      {this.id,
+      this.uid,
+      this.email,
+      this.phone,
+      this.birth,
+      this.name,
+      this.foreigner,
+      this.carrier,
+      this.gender,
+      this.unRegisterAt,
+      this.createdAt,
+      this.updatedAt});
+
+  factory UnRegisterModel.fromJson(Map<String, dynamic> json) =>
+      _$UnRegisterModelFromJson(json);
+  Map<String, dynamic> toJson() => _$UnRegisterModelToJson(this);
 }

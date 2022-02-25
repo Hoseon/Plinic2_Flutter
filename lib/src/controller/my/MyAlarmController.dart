@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:plinic2/src/config/environment.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/restclient/UserClient.dart';
 

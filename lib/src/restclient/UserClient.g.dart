@@ -143,6 +143,44 @@ Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
       'updatedAt': instance.updatedAt?.toIso8601String(),
     };
 
+UnRegisterModel _$UnRegisterModelFromJson(Map<String, dynamic> json) =>
+    UnRegisterModel(
+      id: json['_id'] as String?,
+      uid: json['uid'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      birth: json['birth'] as String?,
+      name: json['name'] as String?,
+      foreigner: json['foreigner'] as String?,
+      carrier: json['carrier'] as String?,
+      gender: json['gender'] as int?,
+      unRegisterAt: json['unRegisterAt'] == null
+          ? null
+          : DateTime.parse(json['unRegisterAt'] as String),
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+    );
+
+Map<String, dynamic> _$UnRegisterModelToJson(UnRegisterModel instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'uid': instance.uid,
+      'email': instance.email,
+      'phone': instance.phone,
+      'birth': instance.birth,
+      'name': instance.name,
+      'foreigner': instance.foreigner,
+      'carrier': instance.carrier,
+      'gender': instance.gender,
+      'unRegisterAt': instance.unRegisterAt?.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+    };
+
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
@@ -151,7 +189,7 @@ Map<String, dynamic> _$UserAddressToJson(UserAddress instance) =>
 
 class _UserClient implements UserClient {
   _UserClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://localhost:8001';
+    baseUrl ??= 'https://admin.g1p.xyz';
   }
 
   final Dio _dio;
@@ -428,6 +466,23 @@ class _UserClient implements UserClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserAddress.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<UnRegisterModel> createUnRegister(body) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UnRegisterModel>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/unregister',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UnRegisterModel.fromJson(_result.data!);
     return value;
   }
 

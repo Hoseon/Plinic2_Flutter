@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:is_first_run/is_first_run.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/controller/notification_controller.dart';
 import 'package:plinic2/src/controller/push_controller.dart';
@@ -24,6 +25,7 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     isFirstCheck();
+
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 

@@ -14,6 +14,7 @@ import 'package:plinic2/src/restclient/UserClient.dart';
 
 class AddressUpdatePage extends StatelessWidget {
   final UserAddress? userAddress;
+  String? postNumber = '00000';
 
   AddressUpdatePage({Key? key, required this.userAddress}) : super(key: key);
 
@@ -355,6 +356,9 @@ class AddressUpdatePage extends StatelessWidget {
           var value = await Get.to(() => AddressSearchPage());
           if (value != null) {
             Map<String, dynamic> value2 = json.decode(value);
+            if (value2['zonecode'] != null && value2['zonecode'] != '') {
+              postNumber = value2['zonecode'].toString(); //zonecode추가
+            }
             MyAddressController.to.address1TextController!.text =
                 value2['address'];
             MyAddressController.to.address2TextController!.text =
@@ -464,6 +468,7 @@ class AddressUpdatePage extends StatelessWidget {
             userAddress!.phone =
                 MyAddressController.to.phoneTextController!.text;
             userAddress!.isDefault = MyAddressController.to.tempIsDefault.value;
+            userAddress!.postNumber = int.parse(postNumber.toString());
 
             print(userAddress!.toName.toString());
             print(userAddress!.address1.toString());

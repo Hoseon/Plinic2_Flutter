@@ -17,8 +17,8 @@ class PlinicDialogTwoButton extends StatelessWidget {
     this.button2Click,
   }) : super(key: key);
 
-  Widget showDialogTwoButton(
-      BuildContext context, String title, String content, String button1Text, String button2Text) {
+  Widget showDialogTwoButton(BuildContext context, String title, String content,
+      String button1Text, String button2Text) {
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Column(
@@ -26,11 +26,12 @@ class PlinicDialogTwoButton extends StatelessWidget {
         children: [
           Text(title,
               style: const TextStyle(
-                  color: Color(0xff000000),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'NotoSansKR',
-                  fontStyle: FontStyle.normal,
-                  fontSize: 20.0),
+                fontFamily: 'NotoSans',
+                color: Color(0xff000000),
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.normal,
+              ),
               textAlign: TextAlign.center),
           SizedBox(height: 20),
           Row(
@@ -40,8 +41,8 @@ class PlinicDialogTwoButton extends StatelessWidget {
               Text(
                 content,
                 style: TextStyle(
-                  fontFamily: 'NotoSansKR',
-                  color: Colors.grey,
+                  fontFamily: 'NotoSans',
+                  color: grey_1,
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   fontStyle: FontStyle.normal,
@@ -85,13 +86,12 @@ class PlinicDialogTwoButton extends StatelessWidget {
                   style: ButtonStyle(
                     elevation: MaterialStateProperty.all(0.0),
                     backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if(states.contains(MaterialState.pressed)) {
-                          return Colors.grey.shade200;
-                        }
-                        return Colors.white;
+                        (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.grey.shade200;
                       }
-                    ),
+                      return Colors.white;
+                    }),
                   ),
                   onPressed: button2Click,
                   child: Text(
@@ -116,6 +116,7 @@ class PlinicDialogTwoButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: showDialogTwoButton(context, title, content, button1Text, button2Text));
+        child: showDialogTwoButton(
+            context, title, content, button1Text, button2Text));
   }
 }

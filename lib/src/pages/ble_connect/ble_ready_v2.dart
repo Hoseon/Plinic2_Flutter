@@ -6,6 +6,7 @@ import 'package:plinic2/src/controller/notification_controller.dart';
 import 'package:plinic2/src/pages/ble_connect/ble_care.dart';
 import 'package:plinic2/src/pages/ble_connect/ble_care_v2.dart';
 import 'package:plinic2/src/pages/ble_connect/ble_connect_succ.dart';
+import 'package:plinic2/src/pages/ble_connect/components/video_player.dart';
 
 class BleReadyV2Page extends GetView<BLEController> {
   BleReadyV2Page({Key? key}) : super(key: key);
@@ -32,14 +33,17 @@ class BleReadyV2Page extends GetView<BLEController> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text('보유하고 계신 플리닉 기기의 \n전원을 켜신 후  연동 해주세요.',
-                  style: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    color: grey_2,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  ))
+              Text(
+                '보유하고 계신 플리닉 기기의 \n전원을 켜신 후  연동 해주세요.',
+                style: TextStyle(
+                  fontFamily: 'NotoSans',
+                  color: grey_2,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  fontStyle: FontStyle.normal,
+                ),
+                textAlign: TextAlign.center,
+              )
             ],
           ),
           Expanded(child: SizedBox(height: 1)),

@@ -128,11 +128,7 @@ class RegisterPage extends StatelessWidget {
     return digest.toString();
   }
 
-  Future<UserCredential> signInWithApple() async {
-    LoginController.to.toggleIsLoading();
-    // final rawNonce = generateNonce();
-    // final nonce = sha256ofString(rawNonce);
-
+  Future<void> signInWithApple() async {
     // Request credential for the currently signed in Apple account.
     final appleCredential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -158,11 +154,15 @@ class RegisterPage extends StatelessWidget {
     final displayName =
         '${appleCredential.givenName} ${appleCredential.familyName}';
     ProfileController.to.updateUserName(displayName);
-    final authResult =
-        await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-    await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
+    // final authResult =
+    //     await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+    // await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
 
-    return authResult;
+    await Get.to(() => TermsCheckPage(),
+        transition: Transition.native,
+        arguments: {'mode': 'apple', 'credential': oauthCredential});
+
+    // return authResult;
   }
 
   Future<UserCredential> signInWithAppleAndroid() async {
@@ -439,7 +439,7 @@ class RegisterPage extends StatelessWidget {
                   textStyle: MaterialStateProperty.all(TextStyle()),
                 ),
                 onPressed: () {
-                  signInWithAppleAndroid();
+                  signInWithApple();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

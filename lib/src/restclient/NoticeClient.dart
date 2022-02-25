@@ -6,8 +6,9 @@ import 'package:dio/dio.dart';
 
 part 'NoticeClient.g.dart';
 
-// @RestApi(baseUrl: 'https://admin.g1p.xyz') //production
-@RestApi(baseUrl: 'http://localhost:8001') //develoment
+// @RestApi() // ENV Setting
+@RestApi(baseUrl: 'https://admin.g1p.xyz') //production
+// @RestApi(baseUrl: 'http://localhost:8001') //develoment
 abstract class NoticeClient {
   factory NoticeClient(Dio dio, {String baseUrl}) = _NoticeClient;
 

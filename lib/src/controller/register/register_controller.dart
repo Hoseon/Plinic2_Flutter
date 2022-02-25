@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
+import 'package:plinic2/src/pages/profile.dart';
 import 'package:plinic2/src/repository/register/register_repository.dart';
 
 class RegisterController extends GetxController {
@@ -15,6 +16,8 @@ class RegisterController extends GetxController {
     super.onInit();
     var userData = ProfileController.to.myProfile.value;
     userData.birthDay = ProfileController.to.birthDay.value;
+    userData.name = ProfileController.to.myProfile.value.name ?? 'user';
+    userData.gender = userData.gender ?? '여자';
     if (ProfileController.to.isRegister.value == false) {
       ProfileController.to.isRegisterComplete(true);
       await _registerRepository

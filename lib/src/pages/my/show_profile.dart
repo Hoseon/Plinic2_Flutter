@@ -19,6 +19,7 @@ import 'package:plinic2/src/component/appbar_title.dart';
 import 'package:plinic2/src/component/common_text.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
 import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
+import 'package:plinic2/src/config/environment.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/model/user_model.dart';
 import 'package:plinic2/src/pages/my/edit_profile.dart';

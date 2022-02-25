@@ -49,30 +49,30 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               ),
             ),
           ),
-          globalFooter: Container(
-            width: Get.mediaQuery.size.width,
-            height: 60,
-            decoration: BoxDecoration(borderRadius: BorderRadius.zero),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                elevation: MaterialStateProperty.all(0.0),
-                shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
-                backgroundColor: MaterialStateProperty.all(primaryColor),
-              ),
-              onPressed: () {
-                _gotoLogin();
-              },
-              child: Text('건너뛰기',
-                  style: TextStyle(
-                    fontFamily: 'NotoSansKR',
-                    color: Color(0xffffffff),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  )),
-            ),
-          ),
+          // globalFooter: Container(
+          //   width: Get.mediaQuery.size.width,
+          //   height: 60,
+          //   decoration: BoxDecoration(borderRadius: BorderRadius.zero),
+          //   child: ElevatedButton(
+          //     style: ButtonStyle(
+          //       elevation: MaterialStateProperty.all(0.0),
+          //       shape: MaterialStateProperty.all(
+          //           RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
+          //       backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          //     ),
+          //     onPressed: () {
+          //       // _gotoLogin();
+          //     },
+          //     child: Text('',
+          //         style: TextStyle(
+          //           fontFamily: 'NotoSansKR',
+          //           color: Color(0xffffffff),
+          //           fontSize: 14,
+          //           fontWeight: FontWeight.w700,
+          //           fontStyle: FontStyle.normal,
+          //         )),
+          //   ),
+          // ),
           pages: [
             PageViewModel(
               title: '',
@@ -80,25 +80,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50),
-                  Text('새로워진 플리닉 2.0',
-                      style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700)),
-                  SizedBox(height: 15),
-                  Text(
-                    '기존 플리닉과는 다른 서비스를 이용해보세요.',
-                    style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 60),
-                  Image.asset('assets/images/intro/intro-image-1.png'),
-                  // SvgPicture.asset('assets/images/intro/intro-image-1.svg')
+                  Image.asset(
+                    'assets/images/intro/Onboarding_1.png',
+                    width: Get.mediaQuery.size.width,
+                    fit: BoxFit.fitWidth,
+                  )
                 ],
               ),
-              // body: '기존 플리닉과는 다른 서비스를 이용해보세요.',
-              // image: FlutterLogo(size: 100.0),
               decoration: pageDecoration,
             ),
             PageViewModel(
@@ -107,25 +95,13 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50),
-                  Text('피부 케어 다이어리',
-                      style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700)),
-                  SizedBox(height: 15),
-                  Text(
-                    '바쁜 일상 속 꾸준한 플리닉 사용 힘드셨죠?\n이젠 언제 어디서나 다이어리를 통해\n피부 케어를 습관화 해보세요.',
-                    style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 79),
-                  Image.asset('assets/images/intro/intro-image-2.png'),
-                  // SvgPicture.asset('assets/images/intro/intro-image-2.svg')
+                  Image.asset(
+                    'assets/images/intro/Onboarding_2.png',
+                    width: Get.mediaQuery.size.width,
+                    fit: BoxFit.fitWidth,
+                  )
                 ],
               ),
-              // body: '기존 플리닉과는 다른 서비스를 이용해보세요.',
-              // image: FlutterLogo(size: 100.0),
               decoration: pageDecoration,
             ),
             PageViewModel(
@@ -134,58 +110,19 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 50),
-                  Text('다른 사용자들과 소통',
-                      style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700)),
-                  SizedBox(height: 15),
-                  Text(
-                    'SNS처럼 다양한 정보를 커뮤니티 안에서\n공유해보세요. 피부가 변화된 인증샷을 남기면\n혜택이 팡팡!',
-                    style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 36),
-                  Image.asset('assets/images/intro/intro-image-3.png'),
-                  // SvgPicture.asset('assets/images/intro/intro-image-3.svg')
+                  Image.asset(
+                    'assets/images/intro/Onboarding_3.png',
+                    width: Get.mediaQuery.size.width,
+                    fit: BoxFit.fitWidth,
+                  )
                 ],
               ),
-              // body: '기존 플리닉과는 다른 서비스를 이용해보세요.',
-              // image: FlutterLogo(size: 100.0),
-              decoration: pageDecoration,
-            ),
-            PageViewModel(
-              title: '',
-              bodyWidget: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 50),
-                  Text('다양한 상품 구매',
-                      style: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.w700)),
-                  SizedBox(height: 15),
-                  Text(
-                    '플리닉을 이용 하면서 획득한 포인트로\n구매해보세요.',
-                    style: TextStyle(fontFamily: 'NotoSansKR', fontSize: 16.0),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(height: 71),
-                  Image.asset('assets/images/intro/intro-image-4.png')
-                  // SvgPicture.asset('assets/images/intro/intro-image-4.svg')
-                ],
-              ),
-              // body: '기존 플리닉과는 다른 서비스를 이용해보세요.',
-              // image: FlutterLogo(size: 100.0),
               decoration: pageDecoration,
             ),
           ],
           onDone: () => _onIntroEnd(context),
-          //onSkip: () => _onIntroEnd(context), // You can override onSkip callback
-          showSkipButton: false,
+          onSkip: () => _gotoLogin(),
+          showSkipButton: true,
           skipFlex: 0,
           nextFlex: 0,
           //rtl: true, // Display as right-to-left
@@ -202,7 +139,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   TextStyle(fontWeight: FontWeight.w600, color: primaryColor)),
           curve: Curves.fastLinearToSlowEaseIn,
           controlsMargin:
-              EdgeInsets.only(bottom: Get.mediaQuery.size.height * 0.75),
+              EdgeInsets.only(bottom: Get.mediaQuery.size.height * 0.85),
           // controlsPadding: kIsWeb
           //     ? const EdgeInsets.all(12.0)
           //     : const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),

@@ -14,6 +14,7 @@ import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/appbar_title.dart';
 import 'package:plinic2/src/component/loading.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
+import 'package:plinic2/src/config/environment.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/model/user_model.dart';
 import 'package:plinic2/src/restclient/UserClient.dart';
@@ -298,7 +299,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               child: TextButton(
                                                 onPressed: () async {
                                                   //사용자 중복체크 nickname Api Call
-                                                  var client = UserClient(dio);
+                                                  var client = UserClient(dio,
+                                                      baseUrl:
+                                                          Environment.apiUrl);
                                                   try {
                                                     var result = await client
                                                         .getCheckUserNickName(

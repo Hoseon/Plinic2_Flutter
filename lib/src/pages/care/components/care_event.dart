@@ -52,7 +52,7 @@ class _CareEventPageState extends State<CareEventPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                '연속 케어 챌린지',
+                '월간 케어',
                 style: TextStyle(
                   fontFamily: 'NotoSansKR',
                   color: black,

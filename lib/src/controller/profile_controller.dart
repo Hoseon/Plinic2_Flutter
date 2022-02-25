@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plinic2/src/config/environment.dart';
 import 'package:plinic2/src/model/user_model.dart';
 import 'package:plinic2/src/repository/firebase_user_repository.dart';
 import 'package:plinic2/src/repository/register/register_repository.dart';
@@ -181,6 +182,8 @@ class ProfileController extends GetxController {
   }
 
   void updateUserName(value) {
+    originlMyProfile.name = value;
+    myProfile(UserModel.clone(originlMyProfile));
     appleUserName(value);
   }
 

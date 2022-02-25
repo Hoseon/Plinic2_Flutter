@@ -31,6 +31,8 @@ class _AddressPageState extends State<AddressPage> {
   bool isCheck = false;
   bool isBtnCheck = false;
 
+  String postNumber = '00000';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -341,6 +343,7 @@ class _AddressPageState extends State<AddressPage> {
                 _controller2.text,
                 _controller3.text,
                 _maskedTextController.text,
+                postNumber,
                 isCheck);
             Get.back();
           },
@@ -422,6 +425,9 @@ class _AddressPageState extends State<AddressPage> {
           var value = await Get.to(() => AddressSearchPage());
           if (value != null) {
             Map<String, dynamic> value2 = json.decode(value);
+            if (value2['zonecode'] != null && value2['zonecode'] != '') {
+              postNumber = value2['zonecode'].toString();
+            }
             setState(() {
               _controller2.text = value2['address'];
               _controller3.text =
