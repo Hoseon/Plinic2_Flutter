@@ -24,7 +24,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    isFirstCheck();
+    isFirstCheck().then((value) => value);
 
     // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
@@ -69,7 +69,7 @@ class _AppState extends State<App> {
     );
   }
 
-  void isFirstCheck() async {
-    isFirst = await IsFirstRun.isFirstRun();
+  Future<void> isFirstCheck() async {
+    isFirst = await IsFirstRun.isFirstCall();
   }
 }

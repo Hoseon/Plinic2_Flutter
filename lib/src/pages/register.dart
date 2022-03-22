@@ -348,7 +348,7 @@ class RegisterPage extends StatelessWidget {
                       width: 250,
                       color: Colors.transparent,
                       child: Text(
-                        '카카오로 시작하기',
+                        '카카오로 가입하기',
                         style: TextStyle(
                           fontFamily: 'AppleSDGothicNeoKR',
                           color: Colors.black,
@@ -403,7 +403,7 @@ class RegisterPage extends StatelessWidget {
                       width: 250,
                       color: Colors.transparent,
                       child: Text(
-                        'Google로 시작하기',
+                        'Google로 가입하기',
                         style: TextStyle(
                           fontFamily: 'AppleSDGothicNeo',
                           color: Color(0x89000000),
@@ -459,7 +459,7 @@ class RegisterPage extends StatelessWidget {
                         width: 250,
                         color: Colors.transparent,
                         child: Text(
-                          'Apple로 시작하기',
+                          'Apple로 가입하기',
                           style: TextStyle(
                             fontFamily: 'AppleSDGothicNeo',
                             color: Colors.white,

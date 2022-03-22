@@ -38,13 +38,13 @@ class CareMainPage extends GetView<CareMainController> {
     return Scaffold(
         appBar: AppBar(
           title: Padding(
-            padding: const EdgeInsets.only(left: 7),
+            padding: const EdgeInsets.only(left: 7, top: 10),
             child: Text(
               '케어',
               style: TextStyle(
-                fontFamily: 'NotoSansKR',
+                fontFamily: 'NotoSans',
                 color: black,
-                fontSize: 20,
+                fontSize: 24,
                 fontWeight: FontWeight.w700,
                 fontStyle: FontStyle.normal,
               ),
@@ -152,7 +152,7 @@ class CareMainPage extends GetView<CareMainController> {
           // DailyCarePage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
           // MonthRankingPage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
           // PointBaroPage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
-          SizedBox(height: Get.mediaQuery.size.height * 0.4),
+          SizedBox(height: Get.mediaQuery.size.height * 0.35),
         ],
       ),
     );

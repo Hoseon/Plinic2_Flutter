@@ -47,7 +47,12 @@ class BLEController extends GetxController {
   @override
   void onClose() async {
     await device.disconnect();
-    print('종료됨');
+    // bleTime(0);
+    // isNewDevice(false);
+    // connectBle(false);
+    // startNotify(false);
+    // isBleDisconnect(false);
+    // isBleTimeOff(false);
     super.onClose();
   }
 
@@ -70,7 +75,31 @@ class BLEController extends GetxController {
   void scanForDevices() async {
     flutterBlue.scan().listen((scanResult) async {
       print('BLE Name : ${scanResult.device}');
-      if (scanResult.device.name.toString().contains('Plinic_Single')) {
+      if (scanResult.device.name.toString().toLowerCase().contains('ps2')) {
+        print('스캔된 BLE Name : ${scanResult.device}');
+        //v1플리닉일 경우
+        isNewDevice(true);
+        device = scanResult.device;
+        testBleId(device.id.toString());
+        testBleName(device.name.toString());
+        stopScanning();
+      }
+
+      if (scanResult.device.name
+          .toString()
+          .toLowerCase()
+          .contains('plinic_single')) {
+        print('스캔된 BLE Name : ${scanResult.device}');
+        //v1플리닉일 경우
+        isNewDevice(false);
+        device = scanResult.device;
+        testBleId(device.id.toString());
+        testBleName(device.name.toString());
+        stopScanning();
+      }
+
+      if (scanResult.device.name.toString().contains('Plinic_Dual')) {
+        print('스캔된 BLE Name : ${scanResult.device}');
         //v1플리닉일 경우
         isNewDevice(false);
         device = scanResult.device;
@@ -100,13 +129,15 @@ class BLEController extends GetxController {
 
       if (onData == BluetoothDeviceState.disconnected) {
         print('BLE종료 됨???');
+        v1_disconnect();
+        device.disconnect();
         isBleDisconnect(true); //BLE연결이 종료되었다고 알려 줌
         isBleTimeOff(true); //BLE연결이 종료되었다고 알려 줌
         bleState(onData);
       }
     });
 
-//After connection start dicovering services
+    //After connection start dicovering services
     discoverServices();
   }
 
@@ -117,27 +148,31 @@ class BLEController extends GetxController {
       service.characteristics.forEach((char) {
         if (char.uuid.toString() == '0000ffe1-0000-1000-8000-00805f9b34fb') {
           print('read찾음');
+          isNewDevice(false);
           notify = char;
           setNotify();
         }
 
         if (char.uuid.toString() == '0000ffe2-0000-1000-8000-00805f9b34fb') {
           // print('write찾음');
+          isNewDevice(false);
           c = char;
         }
 
-        // if (char.uuid.toString() == '6e400003-b5a3-f393-e0a9-e50e24dcca9e') {
-        //   print('read찾음');
-        //   isNewDevice(true);
-        //   notify = char;
-        //   setNotify();
-        // }
+        //v2기계값 UUID 변경된걸로 접근 2022-02-26  ////////////////////
+        if (char.uuid.toString() == '6e400003-b5a3-f393-e0a9-e50e24dcca9e') {
+          print('read찾음');
+          isNewDevice(true);
+          notify = char;
+          setNotify();
+        }
 
-        // if (char.uuid.toString() == '6e400002-b5a3-f393-e0a9-e50e24dcca9e') {
-        //   // print('write찾음');
-        //   c = char;
-        //   isNewDevice(true);
-        // }
+        if (char.uuid.toString() == '6e400002-b5a3-f393-e0a9-e50e24dcca9e') {
+          // print('write찾음');
+          c = char;
+          isNewDevice(true);
+        }
+        //v2기계값 UUID 변경된걸로 접근 2022-02-26  ////////////////////
       });
     });
   }
@@ -152,33 +187,44 @@ class BLEController extends GetxController {
       // print(testBleData);
       // print('--------- notify start ------------');
       // print(value.toString());
-      // if (isNewDevice.value == false) {
-      //   var time =
-      //       value[2].toString() + value[3].toString() + value[4].toString();
-      //   //시간 측정용
+      if (isNewDevice.value == false) {
+        //구 기기일때
+        var time =
+            value[2].toString() + value[3].toString() + value[4].toString();
+        //시간 측정용
 
-      //     var powerCheck = value[5].toString(); //전원체크용
-      //     if (time == '000' || powerCheck == '0') {
-      //       device.disconnect();
-      //       isBleTimeOff(true);
-      //     }
-      //     if (time != '000') {
-      //       bleTime(int.parse(time));
-      //     }
-      //   } else {
-      var time =
-          value[2].toString() + value[3].toString() + value[4].toString();
-      //   //시간 측정용
+        var powerCheck = value[5].toString(); //전원체크용
+        if (time == '000' || powerCheck == '0') {
+          device.disconnect();
+          isBleTimeOff(true);
+          return;
+        }
+        if (time != '000' || time != '255255255') {
+          bleTime(int.parse(time));
+        }
+      } else {
+        var time =
+            value[2].toString() + value[3].toString() + value[4].toString();
 
-      var powerCheck = value[5].toString(); //전원체크용
-      if (time == '000' || powerCheck == '0') {
-        device.disconnect();
-        isBleTimeOff(true);
+        // var timeInt = int.parse(time);
+        if (bleTime.value > 0) {
+          //2022-02-26 v2기계는 처리속도가 빨라서 0 초부터 데이터를 받아 오고 v1기계는 1초부터 받아와서
+          //아래 로직으로 기기를 보강한다.
+          //시간 축적이 0보다 크면? 그때 데이터가 있는 상태니깐 정상적이 종료로 판단하여 기기전원을 off한다
+          var powerCheck = value[5].toString(); //전원체크용
+          if (time == '000' || powerCheck == '0') {
+            device.disconnect();
+            isBleTimeOff(true);
+            return;
+          }
+        }
+
+        if (!time.contains('000') || !time.contains('255255255')) {
+          bleTime(int.parse(time));
+          // print('bleTime : ${bleTime.value}');
+          // print('time : $time');
+        }
       }
-      if (time != '000') {
-        bleTime(int.parse(time));
-      }
-      // }
 
       // 사운드 상태 값 저장
       if (value[6].toInt() == 0) {
@@ -188,21 +234,17 @@ class BLEController extends GetxController {
       }
 
       //배터리 상태 값 저장
-      if (value[4].toInt() == 1) {
-        isLowBattery(true);
-      } else {
+      if (value[5].toInt() == 1) {
         isLowBattery(false);
+      } else {
+        isLowBattery(true);
       }
-
-      // print(bleTime.value);
-      // var timeInt = int.parse(time);
-      // print(timeInt);
-      // print(value[2].toString() + value[3].toString() + value[4].toString());
-      // print('--------- notify end ------------');
+    }).onError((e) {
+      print('BLE Steam Listener Error 발생:: $e');
     });
   }
 
-  void bleOff() async {
+  Future<void> bleOff() async {
     // 01 05 50 4F 46 46 31 03 2021-10-26 조책임한테 off 데이터 새로운걸로 받음
     // await c.write([0x01, 0x05, 0x4F, 0x46, 0x46, 0xFF, 0xE0, 0x03]);
     // 01 06 50 4F 46 46 D5 chs 03 //2022-02-23
@@ -219,7 +261,7 @@ class BLEController extends GetxController {
   void bleSoundOff() async {
     // 01 06 42 4F 46 46 01 chs 03 //2022-02-23
     // 1 6 42 79 46 46 1 545 DD
-    await c.write([0x01, 0x06, 0x42, 0x4F, 0x46, 0x46, 0x01, 0x24, 0x03]);
+    await c.write([0x01, 0x06, 0x42, 0x4F, 0x46, 0x46, 0x01, 0x125, 0x03]);
   }
 
   Future<void> v1_disconnect() async {

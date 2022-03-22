@@ -27,6 +27,9 @@ abstract class UserClient {
   @GET('/user/userPhoneAuthCheck/{uid}')
   Future<PhoneAuth> checkPhoneAuth(@Path('uid') String uid);
 
+  @GET('/user/userPhoneAuthCheckFindId/{phone}')
+  Future<PhoneAuth> userPhoneAuthCheckFindId(@Path('phone') String phone);
+
   //사용자 휴대폰 인증 정보 저장 api call
   @POST('/user/userPhoneAuth')
   Future<PhoneAuth> savePhoneAuth(@Body() PhoneAuth phoneAuth);

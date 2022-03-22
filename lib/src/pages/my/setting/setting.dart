@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/custom_appbar.dart';
 import 'package:plinic2/src/pages/ble_connect/components/video_player.dart';
@@ -11,8 +12,29 @@ import 'package:plinic2/src/pages/my/setting/personal/personal.dart';
 import 'package:plinic2/src/pages/my/setting/terms_conditions/terms_conditions.dart';
 import 'package:plinic2/src/pages/unregister/unregister.dart';
 
-class SettingPage extends StatelessWidget {
-  const SettingPage({Key? key}) : super(key: key);
+class SettingPage extends StatefulWidget {
+  SettingPage({Key? key}) : super(key: key);
+
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
+  PackageInfo? _packageInfo;
+  @override
+  void initState() {
+    // TODO: implement initState
+    getPackageInfo().then((value) {
+      setState(() {
+        _packageInfo = value;
+      });
+    });
+    super.initState();
+  }
+
+  Future<PackageInfo> getPackageInfo() async {
+    return await PackageInfo.fromPlatform();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +49,7 @@ class SettingPage extends StatelessWidget {
           Column(
             children: [
               AutoSizeText(
-                '현재 버전 2.0.0',
+                _packageInfo!.version.toString(),
                 style: TextStyle(
                   fontFamily: 'NotoSans',
                   color: black,
@@ -160,7 +182,7 @@ class SettingPage extends StatelessWidget {
                 child: Row(
                   children: [
                     AutoSizeText(
-                      '플리틱 서비스를 더이상 사용하지 않으시려면',
+                      '플리닉 서비스를 더이상 사용하지 않으시려면',
                       style: TextStyle(
                         fontFamily: 'NotoSans',
                         color: grey_1,

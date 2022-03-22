@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:plinic2/src/pages/login.dart';
 import 'package:plinic2/src/pages/register.dart';
 import 'package:plinic2/src/pages/tabs/tabs.dart';
+import 'package:plinic2/src/restclient/UserClient.dart';
 
 class CheckLogin extends StatefulWidget {
   CheckLogin({Key? key}) : super(key: key);

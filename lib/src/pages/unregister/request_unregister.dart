@@ -48,7 +48,7 @@ class RequestUnRegisterPage extends StatelessWidget {
           RichText(
               text: TextSpan(children: [
             TextSpan(
-                text: '14일 이내 재로그인 시 ',
+                text: '신청일부터',
                 style: TextStyle(
                   fontFamily: 'NotoSans',
                   color: black,
@@ -57,7 +57,7 @@ class RequestUnRegisterPage extends StatelessWidget {
                   fontStyle: FontStyle.normal,
                 )),
             TextSpan(
-                text: '탈퇴회원복구',
+                text: '14일 이후 탈퇴가 완료',
                 style: TextStyle(
                   fontFamily: 'NotoSans',
                   color: black,
@@ -66,7 +66,7 @@ class RequestUnRegisterPage extends StatelessWidget {
                   fontStyle: FontStyle.normal,
                 )),
             TextSpan(
-              text: ' 절차를 진행하실 수 있습니다.',
+              text: '됩니다.',
               style: TextStyle(
                 fontFamily: 'NotoSans',
                 color: black,
@@ -76,6 +76,8 @@ class RequestUnRegisterPage extends StatelessWidget {
               ),
             ),
           ])),
+          SizedBox(height: spacing_xs),
+          Text('탈퇴를 철회하시려면 14일 이내에 ‘카카오 문의하기’로 문의 바랍니다.'),
           SizedBox(height: 46),
           ConstrainedBox(
             constraints: BoxConstraints.tightFor(
@@ -97,7 +99,7 @@ class RequestUnRegisterPage extends StatelessWidget {
                 child: AutoSizeText('확인',
                     style: const TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w700,
                         fontFamily: 'NotoSans',
                         fontStyle: FontStyle.normal,
                         fontSize: 16.0),

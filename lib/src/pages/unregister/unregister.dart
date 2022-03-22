@@ -59,11 +59,11 @@ class UnRegisterPage extends StatelessWidget {
           SizedBox(height: spacing_l),
           headerTitle('유의사항'),
           SizedBox(height: 9),
-          textContent('사용하고 계신 계정은 탈퇴가 완료될 경우 복구가 불가하니 유의 해주세요.', primary),
+          textContent('탈퇴 신청일부터 14일 이후 탈퇴가 완료됩니다.', black),
           SizedBox(height: spacing_xs),
           buildRichText(),
-          SizedBox(height: spacing_xs),
-          buildRichText2(),
+          // SizedBox(height: spacing_xs),
+          // buildRichText2(),
           SizedBox(height: spacing_l),
           headerTitle('회원탈퇴 진행방법'),
           SizedBox(height: 9),
@@ -75,8 +75,14 @@ class UnRegisterPage extends StatelessWidget {
           SizedBox(height: spacing_xs),
           buildRichText4(),
           SizedBox(height: spacing_xs),
-          buildRichText5(),
+          buildRichText4_1(),
+          // SizedBox(height: spacing_xs),
+          // buildRichText5(),
+          SizedBox(height: spacing_l),
+          headerTitle('회원 탈퇴 신청 철회 방법'),
           SizedBox(height: spacing_xs),
+          buildRichText4_2(),
+          // SizedBox(height: spacing_xs),
         ],
       ),
     );
@@ -307,7 +313,7 @@ class UnRegisterPage extends StatelessWidget {
               child: RichText(
                   text: TextSpan(children: [
                 TextSpan(
-                    text: '인증 완료 후 14일간의 탈퇴 대기기간이 있으며,탈퇴 대기기간동안 ',
+                    text: '인증 완료 후 14일간의 탈퇴 대기 기간이 있으며, 대기 기간 중에도 앱 사용이 가능합니다.',
                     style: TextStyle(
                       fontFamily: 'NotoSans',
                       color: black,
@@ -315,17 +321,53 @@ class UnRegisterPage extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                     )),
+                // TextSpan(
+                //     text: '탈퇴 대기 취소',
+                //     style: TextStyle(
+                //       fontFamily: 'NotoSans',
+                //       color: black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w700,
+                //       fontStyle: FontStyle.normal,
+                //     )),
+                // TextSpan(
+                //     text: '를 할 수 있습니다.',
+                //     style: TextStyle(
+                //       fontFamily: 'NotoSans',
+                //       color: black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w400,
+                //       fontStyle: FontStyle.normal,
+                //     )),
+              ]))),
+        ],
+      ),
+    );
+  }
+
+  Widget buildRichText4_1() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText(
+            '•',
+            style: TextStyle(
+              fontFamily: 'NotoSans',
+              color: black,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          SizedBox(width: spacing_xxs),
+          Container(
+              width: Get.size.width * 0.8,
+              child: RichText(
+                  text: TextSpan(children: [
                 TextSpan(
-                    text: '탈퇴 대기 취소',
-                    style: TextStyle(
-                      fontFamily: 'NotoSans',
-                      color: black,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                    )),
-                TextSpan(
-                    text: '를 할 수 있습니다.',
+                    text: '탈퇴 대기 기간 중에는 탈퇴 신청 철회가 가능합니다.',
                     style: TextStyle(
                       fontFamily: 'NotoSans',
                       color: black,
@@ -333,6 +375,78 @@ class UnRegisterPage extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       fontStyle: FontStyle.normal,
                     )),
+                // TextSpan(
+                //     text: '탈퇴 대기 취소',
+                //     style: TextStyle(
+                //       fontFamily: 'NotoSans',
+                //       color: black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w700,
+                //       fontStyle: FontStyle.normal,
+                //     )),
+                // TextSpan(
+                //     text: '를 할 수 있습니다.',
+                //     style: TextStyle(
+                //       fontFamily: 'NotoSans',
+                //       color: black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w400,
+                //       fontStyle: FontStyle.normal,
+                //     )),
+              ]))),
+        ],
+      ),
+    );
+  }
+
+  Widget buildRichText4_2() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText(
+            '•',
+            style: TextStyle(
+              fontFamily: 'NotoSans',
+              color: black,
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              fontStyle: FontStyle.normal,
+            ),
+          ),
+          SizedBox(width: spacing_xxs),
+          Container(
+              width: Get.size.width * 0.8,
+              child: RichText(
+                  text: TextSpan(children: [
+                TextSpan(
+                    text: '탈퇴 신청을 철회하시려면 탈퇴 대기 기간 내에  ‘카카오 문의하기’로 문의 바랍니다.',
+                    style: TextStyle(
+                      fontFamily: 'NotoSans',
+                      color: black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    )),
+                // TextSpan(
+                //     text: '탈퇴 대기 취소',
+                //     style: TextStyle(
+                //       fontFamily: 'NotoSans',
+                //       color: black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w700,
+                //       fontStyle: FontStyle.normal,
+                //     )),
+                // TextSpan(
+                //     text: '를 할 수 있습니다.',
+                //     style: TextStyle(
+                //       fontFamily: 'NotoSans',
+                //       color: black,
+                //       fontSize: 14,
+                //       fontWeight: FontWeight.w400,
+                //       fontStyle: FontStyle.normal,
+                //     )),
               ]))),
         ],
       ),

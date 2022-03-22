@@ -63,12 +63,11 @@ class BleCareCompletePage extends GetView<BLEController> {
           Text(
             '${TimerTextFormatter.secondFormat(deviceLogResponse!.pointsum!.toInt())}',
             style: TextStyle(
-              fontFamily: 'NotoSans',
-              color: primary_dark,
-              fontSize: 36,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.normal,
-            ),
+                color: primary_dark,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'NotoSans',
+                fontStyle: FontStyle.normal,
+                fontSize: 36.0),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -78,19 +77,18 @@ class BleCareCompletePage extends GetView<BLEController> {
                 child: Text(
                   '오늘 성공',
                   style: TextStyle(
-                    fontFamily: 'NotoSans',
-                    color: grey_1,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.normal,
-                  ),
+                      color: grey_1,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'NotoSans',
+                      fontStyle: FontStyle.normal,
+                      fontSize: 20.0),
                 ),
               ),
               SvgPicture.asset('assets/images/care/celebration.svg'),
             ],
           ),
           Text(
-            '케어가 종료되었습니다.\n월간 플리닉으로 기록을 확인해보세요.',
+            '오늘 총 사용시간이 표시됩니다.\n월간 플리닉으로 기록을 확인해보세요.',
             style: TextStyle(
               fontFamily: 'NotoSans',
               color: grey_1,

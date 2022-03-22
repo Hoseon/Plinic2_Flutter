@@ -37,7 +37,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     focusNode.addListener(() async {
       if (!focusNode.hasFocus) {
         //닉네임 텍스트 필드를 빠져 나오면 업데이트
-        if (controller2.text.length < 3) {
+        if (ProfileController.to.nickNameController.text.isEmpty) {
           showSnackBar('닉네임을 2자 이상 입력해주세요.');
           ProfileController.to.chagedNick(false);
           controller2.text = '';
@@ -298,10 +298,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                               height: 28,
                                               child: TextButton(
                                                 onPressed: () async {
+                                                  FocusScope.of(context)
+                                                      .unfocus();
                                                   //사용자 중복체크 nickname Api Call
-                                                  var client = UserClient(dio,
-                                                      baseUrl:
-                                                          Environment.apiUrl);
+                                                  var client = UserClient(dio);
                                                   try {
                                                     var result = await client
                                                         .getCheckUserNickName(
@@ -310,15 +310,17 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                                                 .nickNameController
                                                                 .text);
                                                     if (result == 'true') {
-                                                      controller2.text =
+                                                      ProfileController
+                                                              .to
+                                                              .nickNameController
+                                                              .text =
                                                           ProfileController
                                                               .to
                                                               .myProfile
                                                               .value
                                                               .nickname
                                                               .toString();
-                                                      FocusScope.of(context)
-                                                          .unfocus();
+                                                      // FocusScope.of(context).unfocus();
                                                       showSnackBar(
                                                           '이미 사용중인 닉네임 입니다.');
                                                       return;
@@ -754,7 +756,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('생년월일 선택'),
+        title: Text('생년월 선택'),
         content: LinearDatePicker(
             startDate: '1900/10/17', //yyyy/mm/dd
             endDate: '2021/12/31',
@@ -880,6 +882,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           title: title,
           buttonClick: () {
             Get.back();
+            Get.back();
           },
         );
       },
@@ -906,7 +909,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           duration: Duration(seconds: 3),
           forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
           reverseAnimationCurve: Curves.easeInBack,
-          snackPosition: SnackPosition.BOTTOM),
+          snackPosition: SnackPosition.TOP),
     );
   }
 

@@ -13,7 +13,7 @@ class RegisterRepository {
           'email': userData.email,
           'name': userData.name,
           'nickname': userData.nickname ?? '닉네임없음',
-          'from': userData.uid!.indexOf('kakao') == 1 ? '카카오' : '구글',
+          'from': userData.uid!.contains('kakao') ? '카카오' : '구글',
           'gender': userData.gender,
           'birthDay': userData.birthDay,
           'avata_url': userData.avataUrl
@@ -36,6 +36,8 @@ class RegisterRepository {
         return '409';
       } else if (e.response!.statusCode == 400) {
         return '400';
+      } else if (e.response!.statusCode == 404) {
+        return '404';
       }
     }
   }

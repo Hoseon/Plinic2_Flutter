@@ -133,7 +133,7 @@ class ProfileController extends GetxController {
         originlMyProfile.avataUrl = result.avata_url!; //프로필 이미지를 가져 온다.
       });
     } catch (e) {
-      print(e);
+      // print(e);
     }
 
     //업데이트 전 초기화
@@ -149,6 +149,8 @@ class ProfileController extends GetxController {
       // print('로그인 정보 저장');
       var client = UserClient(dio); //Retrofit 사용 예제
       try {
+        print('myProfile.value.uid');
+        print(myProfile.value.uid);
         //사용자 정보(uid, token) 정보가 존재 하면 저장
         await client
             .saveLoginRecord(UserLogin(uid: myProfile.value.uid))
@@ -162,6 +164,8 @@ class ProfileController extends GetxController {
 
       try {
         //사용자 정보(uid, token) 정보가 존재 하면 저장
+        print('myProfile.value.uid');
+        print(myProfile.value.uid);
         await client
             .savePushTokenRecord(
                 UserToken(uid: myProfile.value.uid, token: pushToken.value))

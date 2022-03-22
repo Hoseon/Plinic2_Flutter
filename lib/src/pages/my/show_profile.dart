@@ -88,7 +88,16 @@ class _ShowProfilePageState extends State<ShowProfilePage> {
               padding: EdgeInsets.only(right: 5),
               alignment: Alignment.center,
               child: TextButton(
-                child: regularTextCommon('수정하기', 14),
+                child: Text(
+                  '수정하기',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    color: primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.normal,
+                  ),
+                ),
                 onPressed: () async {
                   //수정하기전에 사용자 본인인증 체크 하여 없다면 본인인증
                   final client = UserClient(dio);

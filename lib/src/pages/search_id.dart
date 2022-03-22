@@ -3,11 +3,13 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:plinic2/constants.dart';
+import 'package:plinic2/src/component/loading.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
 import 'package:plinic2/src/controller/findId_controller.dart';
 import 'package:plinic2/src/pages/check_login.dart';
 import 'package:plinic2/src/pages/login.dart';
 import 'package:plinic2/src/pages/register.dart';
+import 'package:plinic2/src/restclient/UserClient.dart';
 
 class SearchIdPage extends StatelessWidget {
   const SearchIdPage({Key? key}) : super(key: key);
@@ -24,21 +26,20 @@ class SearchIdPage extends StatelessWidget {
         init:
             Get.put<FindIdController>(FindIdController(phone: values['phone'])),
         builder: (FindIdController findIdController) {
-          if (findIdController.findResult.isNotEmpty) {
-            var mapResult = findIdController.findResult;
-            if (mapResult['phone'] != null) {
-              return buildBody(mapResult);
-            } else {
-              return buildAlert();
+          if (findIdController.isLoading.value) {
+            return LoadingPage();
+          } else {
+            if (findIdController.phoneAuth.value.uid != null) {
+              return buildBody(findIdController.phoneAuth.value);
             }
+            return buildAlert();
           }
-          return Center(child: CircularProgressIndicator());
         },
       ),
     );
   }
 
-  Widget buildBody(var values) {
+  Widget buildBody(PhoneAuth values) {
     return Column(
       children: [
         SizedBox(height: 50),
@@ -88,7 +89,7 @@ class SearchIdPage extends StatelessWidget {
             child: Row(
               children: [
                 SizedBox(width: 18),
-                values['uid'].toString().indexOf('kakao') > 0
+                values.uid.toString().indexOf('kakao') > 0
                     ? Row(
                         children: [
                           Image.asset(
@@ -129,7 +130,7 @@ class SearchIdPage extends StatelessWidget {
                       ),
                 SizedBox(width: 56),
                 Text(
-                  values['email'].toString(),
+                  values.email.toString(),
                   style: TextStyle(
                     // fontFamily: 'NotoSansKR',
                     color: textfields,

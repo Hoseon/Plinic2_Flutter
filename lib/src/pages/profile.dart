@@ -12,6 +12,7 @@ import 'package:plinic2/src/pages/ble_test.dart';
 import 'package:plinic2/src/pages/login.dart';
 import 'package:plinic2/src/pages/subscribe/subscribe_manage.dart';
 import 'package:plinic2/src/pages/subscribe/subscribe_regist_cart.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:flutter_reactive_ble/flutter_reactive_ble.dart' as ble;
 // import 'package:plinic2/src/pages/payment.dart';
 
@@ -216,7 +217,13 @@ class Profile extends StatelessWidget {
                       onPressed: () {
                         Get.to(BleTestPage());
                       },
-                      child: Text('BLE테스트'))
+                      child: Text('BLE테스트')),
+                  // SizedBox(height: 10.0),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       _launchURL();
+                  //     },
+                  //     child: Text('URL Luncher Test'))
                 ],
               ),
             );
@@ -224,6 +231,15 @@ class Profile extends StatelessWidget {
         },
       ),
     );
+  }
+
+  _launchURL() async {
+    const url = 'https://flutter.dev';
+    if (await canLaunch('https://www.naver.com')) {
+      await launch('https://www.naver.com');
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void bootPayBillTest(BuildContext context) async {

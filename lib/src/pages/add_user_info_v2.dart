@@ -441,7 +441,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('생년월일 선택'),
+        title: Text('생년월 선택'),
         content: LinearDatePicker(
             startDate: '1900/10/17', //yyyy/mm/dd
             endDate: '2021/12/31',

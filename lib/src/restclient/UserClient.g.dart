@@ -278,6 +278,23 @@ class _UserClient implements UserClient {
   }
 
   @override
+  Future<PhoneAuth> userPhoneAuthCheckFindId(phone) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PhoneAuth>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(
+                    _dio.options, '/user/userPhoneAuthCheckFindId/${phone}',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = PhoneAuth.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<PhoneAuth> savePhoneAuth(phoneAuth) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
