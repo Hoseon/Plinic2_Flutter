@@ -68,20 +68,20 @@ class Tabs extends GetView<TabsController> {
         ),
         child: Obx(() {
           switch (RouteName.values[controller.currentIndex.value]) {
-            // case RouteName.Home:
-            //   return HomeMainPage();
+            case RouteName.Home:
+              return HomeMainPage();
             case RouteName.Care:
               return CareMainPage();
-            // case RouteName.Community:
-            //   return CommunityPage();
-            // case RouteName.Shop:
-            //   return ShopPage();
-            // case RouteName.Temp:
-            //   return Profile();
+            case RouteName.Community:
+              return CommunityPage();
+            case RouteName.Shop:
+              return ShopPage();
             case RouteName.My:
               return MyPage();
             case RouteName.Temp:
               return Profile();
+            // case RouteName.Temp:
+            //   return Profile();
             // case RouteName.My:
             //   return MyPage();
           }
@@ -103,22 +103,22 @@ class Tabs extends GetView<TabsController> {
             controller.changePageIndex(index);
           },
           items: [
-            // buildBottomNavigationBarItem(
-            //     'assets/images/tabs/bottom-home-inactive.svg',
-            //     'assets/images/tabs/bottom-home.svg',
-            //     '홈'),
+            buildBottomNavigationBarItem(
+                'assets/images/tabs/bottom-home-inactive.svg',
+                'assets/images/tabs/bottom-home.svg',
+                '홈'),
             buildBottomNavigationBarItem(
                 'assets/images/tabs/bottom-care-inactive.svg',
                 'assets/images/tabs/bottom-care.svg',
                 '케어'),
-            // buildBottomNavigationBarItem(
-            //     'assets/images/tabs/bottom-community-inactive.svg',
-            //     'assets/images/tabs/bottom-community.svg',
-            //     '커뮤니티'),
-            // buildBottomNavigationBarItem(
-            //     'assets/images/tabs/bottom-shopping-inactive.svg',
-            //     'assets/images/tabs/bottom-shopping.svg',
-            //     '쇼핑'),
+            buildBottomNavigationBarItem(
+                'assets/images/tabs/bottom-community-inactive.svg',
+                'assets/images/tabs/bottom-community.svg',
+                '커뮤니티'),
+            buildBottomNavigationBarItem(
+                'assets/images/tabs/bottom-shopping-inactive.svg',
+                'assets/images/tabs/bottom-shopping.svg',
+                '쇼핑'),
             buildBottomNavigationBarItem(
                 'assets/images/tabs/bottom-user-inactive.svg',
                 'assets/images/tabs/bottom-user.svg',

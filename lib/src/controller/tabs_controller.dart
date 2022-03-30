@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:plinic2/src/restclient/UserClient.dart';
 
-// enum RouteName { Home, Care, Community, Shop, Temp }
-enum RouteName { Care, My, Temp }
+enum RouteName { Home, Care, Community, Shop, My, Temp }
+// enum RouteName { Care, My, Temp }
 
 class TabsController extends GetxService {
   Rx<GetUser> getUserData = GetUser().obs;
