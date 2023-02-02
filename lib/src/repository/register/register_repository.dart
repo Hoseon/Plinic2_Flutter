@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
 import 'package:plinic2/src/model/user_model.dart';
 
 class RegisterRepository {
-  Future<dynamic> registerUser(UserModel userData, var agree) async {
+  Future<dynamic> registerUser(
+      UserModel userData, var agree, String pushToken) async {
     var dio = Dio(BaseOptions(baseUrl: 'https://admin.g1p.xyz'));
+    // var dio = Dio(BaseOptions(baseUrl: 'http://localhost:8001'));
     try {
       var response = await dio.post('/register', data: {
         'user': {
@@ -12,12 +13,12 @@ class RegisterRepository {
           'email': userData.email,
           'name': userData.name,
           'nickname': userData.nickname ?? '닉네임없음',
-          'from': userData.uid!.indexOf('kakao') == 1 ? '카카오' : '구글',
+          'from': userData.uid!.contains('kakao') ? '카카오' : '구글',
           'gender': userData.gender,
           'birthDay': userData.birthDay,
           'avata_url': userData.avataUrl
         },
-        'token': {'uid': userData.uid, 'token': 'asdfasdfasdf'},
+        'token': {'uid': userData.uid, 'token': pushToken},
         'agree': {
           'uid': userData.uid,
           'agree1': agree['agree1'],
@@ -35,6 +36,8 @@ class RegisterRepository {
         return '409';
       } else if (e.response!.statusCode == 400) {
         return '400';
+      } else if (e.response!.statusCode == 404) {
+        return '404';
       }
     }
   }

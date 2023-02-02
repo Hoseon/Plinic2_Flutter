@@ -1,13 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
+import 'package:plinic2/src/component/loading.dart';
 import 'package:plinic2/src/controller/login_controller.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:plinic2/src/pages/login.dart';
 import 'package:plinic2/src/pages/register.dart';
 import 'package:plinic2/src/pages/tabs/tabs.dart';
+import 'package:plinic2/src/restclient/UserClient.dart';
 
 class CheckLogin extends StatefulWidget {
   CheckLogin({Key? key}) : super(key: key);
@@ -45,12 +48,23 @@ class _CheckLoginState extends State<CheckLogin> {
           // }
         }
 
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return LoadingPage();
+        }
+
         if (snapshot.hasData) {
           return Tabs();
+        } else if (snapshot.hasData == false) {
+          return RegisterPage();
         } else {
           return RegisterPage();
-          // return Login();
         }
+
+        // return Scaffold(
+        //   body: Center(
+        //     child: CircularProgressIndicator(),
+        //   ),
+        // );
       },
     );
   }

@@ -61,8 +61,10 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
 
         if (mode == 'kakao') {
           signInWithKakao(credential, agree);
+        } else if (mode == 'apple') {
+          signInWithApple(credential, agree);
         } else {
-          signInWithGoogle(credential);
+          signInWithGoogle(credential, agree);
         }
         // register();
         // Get.to(() => AddUserInfoV2Page(), transition: Transition.native);
@@ -174,7 +176,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
                   width: Get.mediaQuery.size.width,
                   child: TextField(
                     onTap: () {
-                      showDateDialog(context);
+                      // showDateDialog(context);
                     },
                     readOnly: true,
                     controller: _textEditingController2,
@@ -320,6 +322,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         onTap: () {
           TermsCheckController.to
               .toggleGender(TermsCheckController.to.isMan.value);
+          ProfileController.to.changeGender('남자');
         },
         child: Container(
           alignment: Alignment.center,
@@ -362,6 +365,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
         onTap: () {
           TermsCheckController.to
               .toggleGender(TermsCheckController.to.isMan.value);
+          ProfileController.to.changeGender('여자');
         },
         child: Container(
           alignment: Alignment.center,
@@ -437,7 +441,7 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('생년월일 선택'),
+        title: Text('생년월 선택'),
         content: LinearDatePicker(
             startDate: '1900/10/17', //yyyy/mm/dd
             endDate: '2021/12/31',
@@ -446,6 +450,15 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
               var yearMonth = selectedDate.split('/');
               _textEditingController1.text = yearMonth[0].toString();
               _textEditingController2.text = yearMonth[1].toString();
+              //생년월일이 클릭되는 순간 ProfileController에 <RxString>birthDay에 저장한다.
+              if (_textEditingController2.text.length == 1) {
+                _textEditingController2.text =
+                    '0' + _textEditingController2.text;
+              }
+              var birthDay =
+                  _textEditingController1.text + _textEditingController2.text;
+
+              ProfileController.to.setBirthDay(birthDay);
               // setState(() {
               //   var test = selectedDate.split('/');
               //   _textEditingController1.text = test[0].toString();
@@ -498,28 +511,53 @@ class _AddUserInfoV2PageState extends State<AddUserInfoV2Page> {
     );
   }
 
-  Future<void> signInWithGoogle(OAuthCredential credential) async {
+  Future<void> signInWithGoogle(OAuthCredential credential, agree) async {
     // Once signed in, return the UserCredential
-    ProfileController.to.addInfoV2(
-        _textEditingController1.text + '_' + _textEditingController2.text,
-        TermsCheckController.to.isMan.value);
+    // ProfileController.to.addInfoV2(
+    //     _textEditingController1.text + '_' + _textEditingController2.text,
+    //     TermsCheckController.to.isMan.value);
     // Get.back();
     return await FirebaseAuth.instance
         .signInWithCredential(credential)
-        .then((value) {});
+        .then((value) async {
+      await Get.to(() => UserRegisterPage(),
+          transition: Transition.native, arguments: {'agree': agree});
+    });
   }
 
   Future<void> signInWithKakao(credential, agree) async {
     //파이어베이스 AUTH인증과 동시에 회원가입 페이지로 이동하는곳
     // Once signed in, return the UserCredential
-    ProfileController.to.addInfoV2(
-        _textEditingController1.text + '_' + _textEditingController2.text,
-        TermsCheckController.to.isMan.value);
+    // ProfileController.to.addInfoV2(
+    //     _textEditingController1.text + '_' + _textEditingController2.text,
+    //     TermsCheckController.to.isMan.value);
     return await FirebaseAuth.instance.signInWithCustomToken(credential).then(
       (sucess) {
         Get.to(() => UserRegisterPage(),
             transition: Transition.native, arguments: {'agree': agree});
       },
     );
+  }
+
+  Future<void> signInWithApple(credential, agree) async {
+    //파이어베이스 AUTH인증과 동시에 회원가입 페이지로 이동하는곳
+    // Once signed in, return the UserCredential
+    // ProfileController.to.addInfoV2(
+    //     _textEditingController1.text + '_' + _textEditingController2.text,
+    //     TermsCheckController.to.isMan.value);
+
+    return await FirebaseAuth.instance
+        .signInWithCredential(credential)
+        .then((value) {
+      Get.to(() => UserRegisterPage(),
+          transition: Transition.native, arguments: {'agree': agree});
+    });
+    // await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
+    // return await FirebaseAuth.instance.signInWithCustomToken(credential).then(
+    //   (sucess) {
+    //     Get.to(() => UserRegisterPage(),
+    //         transition: Transition.native, arguments: {'agree': agree});
+    //   },
+    // );
   }
 }

@@ -6,6 +6,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
+import 'package:plinic2/src/component/loading.dart';
 import 'package:plinic2/src/component/plinic_dialog_one_button.dart';
 import 'package:plinic2/src/controller/profile_controller.dart';
 import 'package:plinic2/src/controller/register/register_controller.dart';
@@ -20,75 +21,48 @@ class UserRegisterPage extends StatefulWidget {
 }
 
 class _UserRegisterPageState extends State<UserRegisterPage> {
+  Future? myFuture;
+
+  Future<dynamic> _fetchData() async {
+    await Future.delayed(Duration(milliseconds: 1500));
+    var result = await RegisterController.to.registerUser();
+    return result;
+  }
+
+  @override
+  void initState() {
+    myFuture = _fetchData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var agree = Get.arguments['agree'];
+    Get.put<RegisterController>(RegisterController());
     return Scaffold(
       backgroundColor: white,
       body: _registerUser(context),
     );
   }
 
-  void registerDialog(context) async {
-    await showAnimatedDialog(
-      context: context,
-      barrierDismissible: false,
-      animationType: DialogTransitionType.fade,
-      curve: Curves.fastOutSlowIn,
-      builder: (BuildContext context) {
-        return PlinicDialogOneButton(
-          buttonText: '확인',
-          title: '알림',
-          content: '회원가입이 완료되었습니다',
-          buttonClick: () {
-            Get.back();
-            Get.offAll(() => CheckLogin(), transition: Transition.native);
-          },
-        );
-      },
-    );
-  }
-
-  void registerFailDialog(context) async {
-    await showAnimatedDialog(
-      context: context,
-      barrierDismissible: false,
-      animationType: DialogTransitionType.fade,
-      curve: Curves.fastOutSlowIn,
-      builder: (BuildContext context) {
-        return PlinicDialogOneButton(
-          buttonText: '확인',
-          title: '알림',
-          content: '회원가입에 실패 하였습니다.',
-          buttonClick: () {
-            Get.back();
-            Get.offAll(() => RegisterPage(), transition: Transition.native);
-          },
-        );
-      },
-    );
-  }
-
   Widget _registerUser(BuildContext context) {
     return Obx(
-      () => ProfileController.to.myProfile.value.email != null
-          ? GetX<RegisterController>(
-              init: Get.put<RegisterController>(RegisterController()),
-              builder: (RegisterController controller) {
-                if (controller.isUser.value == '201') {
-                  return _registerCompUser();
-                } else if (controller.isUser.value == '409') {
-                  return _conflictUser();
-                } else if (controller.isUser.value == '400') {
-                  return _errorUser();
+      () => ProfileController.to.myProfile.value.uid != null
+          ? FutureBuilder(
+              future: myFuture,
+              builder: (_, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  if (snapshot.data == '201') {
+                    return _registerCompUser(context);
+                  } else if (snapshot.data == '409') {
+                    return _conflictUser(context);
+                  } else if (snapshot.data == '400') {
+                    return _errorUser(context);
+                  } else if (snapshot.data == '404') {
+                    return _errorUser(context);
+                  }
                 }
-
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: primary,
-                ));
-              },
-            )
+                return LoadingPage();
+              })
           : Center(
               child: CircularProgressIndicator(
               color: primary,
@@ -96,8 +70,9 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
     );
   }
 
-  Widget _registerCompUser() {
-    //이미 사용자가 있는 뷰
+  Widget _registerCompUser(BuildContext context) {
+    //회원가입 분류
+    ProfileController.to.isRegisterComplete(false);
     return Column(
       children: [
         SizedBox(height: 188.5),
@@ -133,8 +108,10 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
     );
   }
 
-  Widget _conflictUser() {
+  Widget _conflictUser(BuildContext context) {
     //이미 사용자가 있는 뷰
+    ProfileController.to.isRegisterComplete(false);
+    FirebaseAuth.instance.signOut();
     return Column(
       children: [
         SizedBox(height: 218.5),
@@ -170,7 +147,9 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
     );
   }
 
-  Widget _errorUser() {
+  Widget _errorUser(BuildContext context) {
+    ProfileController.to.isRegisterComplete(false);
+    FirebaseAuth.instance.signOut();
     //서버 에러가 있을시에 화면가입 불가 view
     return Column(
       children: [
@@ -295,6 +274,46 @@ class _UserRegisterPageState extends State<UserRegisterPage> {
           fontStyle: FontStyle.normal,
         ),
       ),
+    );
+  }
+
+  void registerDialog(context) async {
+    await showAnimatedDialog(
+      context: context,
+      barrierDismissible: false,
+      animationType: DialogTransitionType.fade,
+      curve: Curves.fastOutSlowIn,
+      builder: (BuildContext context) {
+        return PlinicDialogOneButton(
+          buttonText: '확인',
+          title: '알림',
+          content: '회원가입이 완료되었습니다',
+          buttonClick: () {
+            Get.back();
+            Get.offAll(() => CheckLogin(), transition: Transition.native);
+          },
+        );
+      },
+    );
+  }
+
+  void registerFailDialog(context) async {
+    await showAnimatedDialog(
+      context: context,
+      barrierDismissible: false,
+      animationType: DialogTransitionType.fade,
+      curve: Curves.fastOutSlowIn,
+      builder: (BuildContext context) {
+        return PlinicDialogOneButton(
+          buttonText: '확인',
+          title: '알림',
+          content: '회원가입에 실패 하였습니다.',
+          buttonClick: () {
+            Get.back();
+            Get.offAll(() => RegisterPage(), transition: Transition.native);
+          },
+        );
+      },
     );
   }
 }

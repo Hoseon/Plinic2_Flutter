@@ -12,6 +12,7 @@ import 'package:plinic2/src/pages/ble_test.dart';
 import 'package:plinic2/src/pages/login.dart';
 import 'package:plinic2/src/pages/subscribe/subscribe_manage.dart';
 import 'package:plinic2/src/pages/subscribe/subscribe_regist_cart.dart';
+import 'package:url_launcher/url_launcher.dart';
 // import 'package:flutter_reactive_ble/flutter_reactive_ble.dart' as ble;
 // import 'package:plinic2/src/pages/payment.dart';
 
@@ -159,6 +160,16 @@ class Profile extends StatelessWidget {
                   // ),
                   TextButton(
                     onPressed: () {
+                      goBootpayRequest(context); //본인인증
+                      // bootPayBillTest(context); //정기결제
+                      // Get.toNamed('/crediCard');
+                      // Get.to(SubScribeRegistCard(),
+                      //     transition: Transition.native);
+                    },
+                    child: Text('부트페이 본인인증 테스트'),
+                  ),
+                  TextButton(
+                    onPressed: () {
                       // goBootpayRequest(context); //본인인증
                       // bootPayBillTest(context); //정기결제
                       Get.toNamed('/crediCard');
@@ -206,7 +217,13 @@ class Profile extends StatelessWidget {
                       onPressed: () {
                         Get.to(BleTestPage());
                       },
-                      child: Text('BLE테스트'))
+                      child: Text('BLE테스트')),
+                  // SizedBox(height: 10.0),
+                  // TextButton(
+                  //     onPressed: () {
+                  //       _launchURL();
+                  //     },
+                  //     child: Text('URL Luncher Test'))
                 ],
               ),
             );
@@ -216,9 +233,18 @@ class Profile extends StatelessWidget {
     );
   }
 
+  _launchURL() async {
+    const url = 'https://flutter.dev';
+    if (await canLaunch('https://www.naver.com')) {
+      await launch('https://www.naver.com');
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   void bootPayBillTest(BuildContext context) async {
     var payload = Payload();
-    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.androidApplicationId = '60e24e465b2948001ddc501b';
     payload.iosApplicationId = '60e24e465b2948001ddc501c';
 
     payload.pg = 'nicepay';
@@ -268,7 +294,7 @@ class Profile extends StatelessWidget {
 
   void goBootpayRequest(BuildContext context) async {
     var payload = Payload();
-    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.androidApplicationId = '60e24e465b2948001ddc501b';
     payload.iosApplicationId = '60e24e465b2948001ddc501c';
 
     payload.pg = 'danal';
@@ -292,6 +318,7 @@ class Profile extends StatelessWidget {
       },
       onCancel: (String json) {
         print('onCancel: $json');
+        Get.back();
       },
       onError: (String json) {
         print('onError: $json');

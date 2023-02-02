@@ -6,6 +6,5 @@ class ShopController extends GetxController {
 
   void changeCurrentTab(int index) {
     currentShopTab(index);
-    print(index);
   }
 }

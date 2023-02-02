@@ -20,7 +20,7 @@ class CustomAppbar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       title: AppbarTitle(title: appBarTitle.toString()),
       centerTitle: true,
-      elevation: 0.3,
+      elevation: 0.0,
       backgroundColor: Colors.white,
       leading: IconButton(
         icon: Icon(LineIcons.arrowLeft),

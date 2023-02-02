@@ -88,7 +88,7 @@ class Login extends StatelessWidget {
   }
 
   Future<UserCredential> signInWithApple() async {
-    LoginController.to.toggleIsLoading();
+    // LoginController.to.toggleIsLoading();
     // final rawNonce = generateNonce();
     // final nonce = sha256ofString(rawNonce);
 
@@ -114,12 +114,13 @@ class Login extends StatelessWidget {
 
     // Sign in the user with Firebase. If the nonce we generated earlier does
     // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-    final displayName =
-        '${appleCredential.givenName} ${appleCredential.familyName}';
-    ProfileController.to.updateUserName(displayName);
+    // final displayName =
+    //     '${appleCredential.givenName} ${appleCredential.familyName}';
+    // ProfileController.to.updateUserName(displayName);
     final authResult =
         await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-    await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
+    Get.back(); //사용자가 로그아웃후 다시 streambuilder가 있는 check_login.dart로 넘어가야지만 streambuild -> 원하는 페이지로 이동하게 되어 있다.
+    // await FirebaseAuth.instance.currentUser!.updateDisplayName(displayName);
 
     return authResult;
   }
@@ -515,7 +516,7 @@ class Login extends StatelessWidget {
                   textStyle: MaterialStateProperty.all(TextStyle()),
                 ),
                 onPressed: () {
-                  signInWithAppleAndroid();
+                  signInWithApple();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -604,7 +605,7 @@ class Login extends StatelessWidget {
 
   void goBootpayRequest(BuildContext context) async {
     var payload = Payload();
-    payload.androidApplicationId = '5b8f6a4d396fa665fdc2b5e8';
+    payload.androidApplicationId = '60e24e465b2948001ddc501b';
     payload.iosApplicationId = '60e24e465b2948001ddc501c';
 
     payload.pg = 'danal';

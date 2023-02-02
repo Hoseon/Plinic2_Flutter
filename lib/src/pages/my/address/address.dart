@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:plinic2/constants.dart';
 import 'package:plinic2/src/component/appbar_title.dart';
 import 'package:plinic2/src/component/plinic_dialog_two_button.dart';
+import 'package:plinic2/src/controller/my/MyAlarmController.dart';
+import 'package:plinic2/src/controller/my/myAddress_controller.dart';
 import 'package:plinic2/src/pages/my/address/address_search.dart';
 
 class AddressPage extends StatefulWidget {
@@ -28,6 +30,8 @@ class _AddressPageState extends State<AddressPage> {
 
   bool isCheck = false;
   bool isBtnCheck = false;
+
+  String postNumber = '00000';
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +81,13 @@ class _AddressPageState extends State<AddressPage> {
                       },
                       // textAlignVertical: TextAlignVertical.center,
                       // keyboardType: TextInputType.text,
+                      style: TextStyle(
+                        fontFamily: 'NotoSans',
+                        color: black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                      ),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.all(8),
                         enabledBorder: OutlineInputBorder(
@@ -88,11 +99,11 @@ class _AddressPageState extends State<AddressPage> {
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: grey_1, width: 0.5),
                         ),
-                        hintText: '받으실분',
+                        hintText: '이름을 입력해주세요',
                         hintStyle: TextStyle(
-                          fontFamily: 'NotoSansKR',
-                          color: black,
-                          fontSize: 14,
+                          fontFamily: 'NotoSans',
+                          color: textfields,
+                          fontSize: 12,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
                         ),
@@ -123,6 +134,13 @@ class _AddressPageState extends State<AddressPage> {
                               checkForm();
                             },
                             keyboardType: TextInputType.text,
+                            style: TextStyle(
+                              fontFamily: 'NotoSans',
+                              color: black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
                             decoration: InputDecoration(
                                 contentPadding: EdgeInsets.all(8),
                                 enabledBorder: OutlineInputBorder(
@@ -136,16 +154,15 @@ class _AddressPageState extends State<AddressPage> {
                                   borderSide:
                                       BorderSide(color: grey_1, width: 0.5),
                                 ),
-                                hintText: '주소를 입력하세요',
+                                hintText: '주소찾기를 눌러주세요',
                                 hintStyle: TextStyle(
-                                  fontFamily: 'NotoSansKR',
-                                  color: grey_2,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                    color: textfields,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: 'NotoSans',
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 12.0),
                                 filled: true,
-                                fillColor: grey_3,
+                                fillColor: white,
                                 enabled: false),
                           ),
                         ),
@@ -159,7 +176,7 @@ class _AddressPageState extends State<AddressPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: spacing_xxs),
+                SizedBox(height: spacing_xs),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
                   child: Row(
@@ -174,30 +191,35 @@ class _AddressPageState extends State<AddressPage> {
                             },
                             // readOnly: true,
                             keyboardType: TextInputType.text,
+                            style: TextStyle(
+                              fontFamily: 'NotoSans',
+                              color: black,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                              fontStyle: FontStyle.normal,
+                            ),
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.all(8),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: grey_2, width: 0.5),
+                                borderSide: BorderSide(color: grey_2, width: 1),
                               ),
                               border: OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: Colors.red, width: 1)),
+                                      BorderSide(color: grey_1, width: 1)),
                               focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: grey_1, width: 0.5),
+                                borderSide: BorderSide(color: grey_1, width: 1),
                               ),
-                              hintText: '상세주소를 입력하세요',
+                              hintText: '상세정보를 입력해주세요',
                               hintStyle: TextStyle(
-                                fontFamily: 'NotoSansKR',
-                                color: grey_2,
-                                fontSize: 14,
+                                fontFamily: 'NotoSans',
+                                color: textfields,
+                                fontSize: 12,
                                 fontWeight: FontWeight.w400,
                                 fontStyle: FontStyle.normal,
                               ),
                               filled: true,
                               fillColor: grey_3,
-                              // enabled: false,
+                              enabled: true,
                             ),
                           ),
                         ),
@@ -224,6 +246,13 @@ class _AddressPageState extends State<AddressPage> {
                     onChanged: (value) {
                       checkForm();
                     },
+                    style: TextStyle(
+                      fontFamily: 'NotoSans',
+                      color: black,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                    ),
                     decoration: InputDecoration(
                       contentPadding: EdgeInsets.all(8),
                       enabledBorder: OutlineInputBorder(
@@ -234,11 +263,11 @@ class _AddressPageState extends State<AddressPage> {
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: grey_1, width: 0.5),
                       ),
-                      hintText: '전화번호',
+                      hintText: '휴대폰번호를 입력해주세요',
                       hintStyle: TextStyle(
-                        fontFamily: 'NotoSansKR',
-                        color: black,
-                        fontSize: 14,
+                        fontFamily: 'NotoSans',
+                        color: textfields,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         fontStyle: FontStyle.normal,
                       ),
@@ -304,7 +333,18 @@ class _AddressPageState extends State<AddressPage> {
             backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
             elevation: MaterialStateProperty.all<double>(0.0),
           ),
-          onPressed: () {
+          onPressed: () async {
+            print(_controller1.text);
+            print(_controller2.text);
+            print(_controller3.text);
+            print(_maskedTextController.text);
+            await MyAddressController.to.creatUserAddress(
+                _controller1.text,
+                _controller2.text,
+                _controller3.text,
+                _maskedTextController.text,
+                postNumber,
+                isCheck);
             Get.back();
           },
           child: Text(
@@ -377,6 +417,7 @@ class _AddressPageState extends State<AddressPage> {
   Widget findPostButton() {
     return Container(
       height: 48,
+      width: 200,
       child: ElevatedButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(primaryColor)),
@@ -384,6 +425,9 @@ class _AddressPageState extends State<AddressPage> {
           var value = await Get.to(() => AddressSearchPage());
           if (value != null) {
             Map<String, dynamic> value2 = json.decode(value);
+            if (value2['zonecode'] != null && value2['zonecode'] != '') {
+              postNumber = value2['zonecode'].toString();
+            }
             setState(() {
               _controller2.text = value2['address'];
               _controller3.text =
@@ -394,7 +438,7 @@ class _AddressPageState extends State<AddressPage> {
           }
         },
         child: Text(
-          '우편번호찾기',
+          '주소찾기',
           style: TextStyle(
             fontFamily: 'NotoSansKR',
             color: white,

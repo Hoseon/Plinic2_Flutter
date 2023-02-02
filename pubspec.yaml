@@ -15,16 +15,18 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.79+79
+version: 1.0.127+127
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   animated_text_kit: ^4.2.1
+  auto_size_text: ^3.0.0
   bootpay: ^1.5.0
   cached_network_image: ^3.0.0
   cloud_firestore: ^2.3.0
+  confetti: ^0.6.0
   connectivity_plus: ^1.0.4
   crypto: null
   cupertino_icons: ^1.0.2
@@ -47,6 +49,7 @@ dependencies:
     git:
       url: https://github.com/AlexHartford/flutter_datetime_picker.git
       ref: master
+  flutter_dotenv: ^5.0.2
   flutter_image_slideshow: ^0.1.0
   flutter_linear_datepicker: ^2.0.3
   flutter_local_notifications: ^5.0.0
@@ -54,6 +57,7 @@ dependencies:
   flutter_radio_group: ^2.1.0
   flutter_rating_bar: ^4.0.0
   flutter_slidable: ^0.6.0
+  flutter_spinkit: ^5.1.0
   flutter_svg: ^0.22.0
   flutter_switch: ^0.3.2
   flutter_web_auth: null
@@ -66,13 +70,20 @@ dependencies:
   group_button: ^3.0.0
   group_radio_button: ^1.1.0
   http: null
+  image_cropper: ^1.4.1
+  image_picker: ^0.8.4+8
   intl: ^0.17.0
   introduction_screen: ^2.1.0
+  is_first_run: ^1.0.0
+  kakao_flutter_sdk: ^0.9.0
   line_icons: ^2.0.1
+  ntp: ^2.0.0
+  package_info_plus: ^1.4.0
   percent_indicator: ^3.0.1
   permission_handler: ^8.0.1
   pie_chart: ^5.0.0
   readmore: ^2.1.0
+  retrofit: ^3.0.1
   roundcheckbox: ^2.0.1
   shimmer: ^2.0.0
   sign_in_with_apple: ^3.0.0
@@ -81,15 +92,18 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   step_progress_indicator: ^1.0.1
   table_calendar: ^3.0.2
+  url_launcher: ^6.0.20
   uuid: null
+  video_player: ^2.2.3
   webview_flutter: ^3.0.0
-  is_first_run: ^1.0.0
-
 
 dev_dependencies:
+  build_runner: ^2.1.7
   flutter_test:
     sdk: flutter
+  json_serializable: ^6.1.4
   pedantic: ^1.11.0
+  retrofit_generator: ^4.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -102,6 +116,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
+    - .env.production
+    - .env.development
     - assets/images/
     - assets/images/splash/
     - assets/images/tabsIcon/
@@ -111,6 +128,7 @@ flutter:
     - assets/images/home/
     - assets/images/shop/
     - assets/images/register/
+    - assets/images/icons/
     - assets/html/
 
   # An image asset can refer to one or more resolution-specific "variants", see

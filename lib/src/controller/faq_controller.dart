@@ -5,8 +5,6 @@ class FaqController extends GetxController {
 
   void updateTabIndex(index) {
     tabIndex(index);
-    print(tabIndex);
+    // print(tabIndex);
   }
-
-
 }

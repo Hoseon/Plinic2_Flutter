@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:plinic2/constants.dart';
+import 'package:plinic2/src/component/loading.dart';
+import 'package:plinic2/src/controller/care/care_main_controller.dart';
 import 'package:plinic2/src/controller/tabs_controller.dart';
 import 'package:plinic2/src/pages/alarm/alarm.dart';
 import 'package:plinic2/src/pages/care/components/calendar.dart';
@@ -11,72 +14,106 @@ import 'package:plinic2/src/pages/care/components/care_event.dart';
 import 'package:plinic2/src/pages/care/components/daily_care.dart';
 import 'package:plinic2/src/pages/care/components/month_caretime.dart';
 import 'package:plinic2/src/pages/care/components/month_ranking.dart';
+import 'package:plinic2/src/pages/care/components/monthly_care.dart';
+import 'package:plinic2/src/pages/care/components/monthly_next_care.dart';
+import 'package:plinic2/src/pages/care/components/monthly_plinic.dart';
 import 'package:plinic2/src/pages/care/components/point_baro.dart';
 import 'package:plinic2/src/pages/my/my_test.dart';
+import 'package:plinic2/src/pages/my/setting/faq/faq.dart';
 import 'package:plinic2/src/pages/plinic_fab.dart';
+import 'package:plinic2/src/restclient/ChallengeClient.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class CareMainPage extends StatelessWidget {
+class CareMainPage extends GetView<CareMainController> {
   CareMainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Get.put<CareMainController>(CareMainController());
+    return buildBody(context);
+  }
+
+  Scaffold buildBody(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(left: 7),
-          child: Text(
-            '케어',
-            style: TextStyle(
-              fontFamily: 'NotoSansKR',
-              color: black,
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              fontStyle: FontStyle.normal,
+        appBar: AppBar(
+          title: Padding(
+            padding: const EdgeInsets.only(left: 7, top: 10),
+            child: Text(
+              '케어',
+              style: TextStyle(
+                fontFamily: 'NotoSans',
+                color: black,
+                fontSize: 24,
+                fontWeight: FontWeight.w700,
+                fontStyle: FontStyle.normal,
+              ),
             ),
           ),
+          elevation: 0.0,
+          backgroundColor: Colors.white,
+          centerTitle: false,
+          // actions: [
+          //   Padding(
+          //     padding: const EdgeInsets.symmetric(horizontal: spacing_m),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         InkWell(
+          //             onTap: () {
+          //               Get.to(AlarmPage(), transition: Transition.native);
+          //             },
+          //             child: Icon(LineIcons.bell, size: 28, color: black)),
+          //         SizedBox(width: 16),
+          //         InkWell(
+          //           onTap: () {
+          //             Get.to(MyTestPage(), transition: Transition.native);
+          //           },
+          //           child:
+          //               Icon(LineIcons.userCircleAlt, size: 28, color: black),
+          //         ),
+          //       ],
+          //     ),
+          //   )
+          // ],
         ),
-        elevation: 0.0,
-        backgroundColor: Colors.white,
-        centerTitle: false,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: spacing_m),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Get.to(AlarmPage(), transition: Transition.native);
-                    },
-                    child: Icon(LineIcons.bell, size: 28, color: black)),
-                SizedBox(width: 16),
-                InkWell(
-                  onTap: () {
-                    Get.to(MyTestPage(), transition: Transition.native);
-                  },
-                  child: Icon(LineIcons.userCircleAlt, size: 28, color: black),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-      backgroundColor: white,
-      body: SlidingUpPanel(
-        slideDirection: SlideDirection.DOWN,
-        collapsed: CareCalendarPage(),
-        isDraggable: true,
-        minHeight: 120,
-        maxHeight: 370,
-        borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
-        panel: CareCalendarMonthPage(),
-        body: careMain(context),
-      ),
-      // careMain_Loading(),
-      floatingActionButton: PlinicFaB(),
-    );
+        backgroundColor: white,
+        body: SlidingUpPanel(
+          slideDirection: SlideDirection.DOWN,
+          collapsed: CareCalendarPage(),
+          isDraggable: true,
+          minHeight: Get.mediaQuery.size.height * 0.16,
+          maxHeight: Get.mediaQuery.size.height * 0.59,
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+          panel: CareCalendarMonthPage(),
+          body: NotificationListener<UserScrollNotification>(
+              onNotification: (notification) {
+                if (notification.direction == ScrollDirection.forward) {
+                  controller.isFabVisible(false);
+                } else if (notification.direction == ScrollDirection.reverse) {
+                  controller.isFabVisible(false);
+                } else if (notification.direction == ScrollDirection.idle) {
+                  controller.isFabVisible(true);
+                }
+                return true;
+              },
+              child: careMain(context)),
+        ),
+        // careMain_Loading(),
+        // bottomSheet: Padding(
+        //   padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        //   child: Container(
+        //       decoration: BoxDecoration(
+        //           borderRadius: BorderRadius.circular(10), color: Colors.blue),
+        //       width: Get.mediaQuery.size.width,
+        //       height: 45),
+        // ),
+
+        floatingActionButton: Obx(
+          () => Visibility(
+              visible: controller.isFabVisible.value, child: PlinicFaB()),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat);
   }
 
   Widget careMain(BuildContext context) {
@@ -86,12 +123,36 @@ class CareMainPage extends StatelessWidget {
           SizedBox(height: 112),
           // CareCalendarPage(),
           SizedBox(height: 48),
-          MonthCareTimePage(),
-          CareEventPage(),
-          DailyCarePage(),
-          MonthRankingPage(),
-          PointBaroPage(),
-          SizedBox(height: 180),
+          MonthlyPlinicPage(),
+          MonthlyCarePage(),
+          MonthlyNextCarePage(),
+          SizedBox(height: 44),
+          Stack(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: spacing_xl),
+                child: Image.asset(
+                  'assets/images/care/care_bottom_banner.png',
+                  width: Get.mediaQuery.size.width,
+                  fit: BoxFit.fitWidth,
+                ),
+              ),
+              Positioned.fill(
+                  child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: grey_3,
+                        onTap: () => Get.to(() => FaqPage(),
+                            transition: Transition.native),
+                      )))
+            ],
+          ),
+          // MonthCareTimePage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
+          // CareEventPage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
+          // DailyCarePage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
+          // MonthRankingPage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
+          // PointBaroPage(), 2022-02-15 프로젝트 2.0.0하면서 안보이게 처리
+          SizedBox(height: Get.mediaQuery.size.height * 0.35),
         ],
       ),
     );

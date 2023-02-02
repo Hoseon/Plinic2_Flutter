@@ -551,7 +551,14 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.0)
+  - image_cropper (0.0.4):
+    - Flutter
+    - TOCropViewController (~> 2.6.0)
+  - image_picker (0.0.1):
+    - Flutter
   - just_audio (0.0.1):
+    - Flutter
+  - kakao_flutter_sdk (0.9.0):
     - Flutter
   - leveldb-library (1.22.1)
   - nanopb (2.30908.0):
@@ -560,6 +567,8 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - package_info (0.0.1):
+    - Flutter
+  - package_info_plus (0.4.5):
     - Flutter
   - path_provider (0.0.1):
     - Flutter
@@ -576,7 +585,8 @@ PODS:
     - Flutter
     - FMDB (>= 2.7.5)
   - Toast (4.0.0)
-  - url_launcher (0.0.1):
+  - TOCropViewController (2.6.0)
+  - url_launcher_ios (0.0.1):
     - Flutter
   - video_player (0.0.1):
     - Flutter
@@ -602,14 +612,18 @@ DEPENDENCIES:
   - flutter_web_auth (from `.symlinks/plugins/flutter_web_auth/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - google_sign_in (from `.symlinks/plugins/google_sign_in/ios`)
+  - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - kakao_flutter_sdk (from `.symlinks/plugins/kakao_flutter_sdk/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
+  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - sign_in_with_apple (from `.symlinks/plugins/sign_in_with_apple/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
-  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/ios`)
@@ -643,6 +657,7 @@ SPEC REPOS:
     - Protobuf
     - Reachability
     - Toast
+    - TOCropViewController
 
 EXTERNAL SOURCES:
   audio_session:
@@ -677,10 +692,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/fluttertoast/ios"
   google_sign_in:
     :path: ".symlinks/plugins/google_sign_in/ios"
+  image_cropper:
+    :path: ".symlinks/plugins/image_cropper/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
+  kakao_flutter_sdk:
+    :path: ".symlinks/plugins/kakao_flutter_sdk/ios"
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
+  package_info_plus:
+    :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   permission_handler:
@@ -691,8 +714,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sign_in_with_apple/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
-  url_launcher:
-    :path: ".symlinks/plugins/url_launcher/ios"
+  url_launcher_ios:
+    :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player:
     :path: ".symlinks/plugins/video_player/ios"
   wakelock:
@@ -738,10 +761,14 @@ SPEC CHECKSUMS:
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
+  image_cropper: f1668dd8d2cad2d357955caad15a40547856edcb
+  image_picker: 541dcbb3b9cf32d87eacbd957845d8651d6c62c3
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
+  kakao_flutter_sdk: bb7397452b15fb550037aea8e6d347143488af71
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
+  package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider: d1e9807085df1f9cc9318206cd649dc0b76be3de
   permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
@@ -751,7 +778,8 @@ SPEC CHECKSUMS:
   sign_in_with_apple: f3bf75217ea4c2c8b91823f225d70230119b8440
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
-  url_launcher: b6e016d912f04be9f5bf6e8e82dc599b7ba59649
+  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
+  url_launcher_ios: 02f1989d4e14e998335b02b67a7590fa34f971af
   video_player: ecd305f42e9044793efd34846e1ce64c31ea6fcb
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
   webview_flutter_wkwebview: 005fbd90c888a42c5690919a1527ecc6649e1162

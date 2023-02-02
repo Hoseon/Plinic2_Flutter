@@ -5,6 +5,6 @@ class CashController extends GetxController {
 
   void toggleSort(bool value) {
     checkSort(value);
-    print(value);
+    // print(value);
   }
 }
